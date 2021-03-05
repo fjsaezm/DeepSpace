@@ -33,5 +33,26 @@ class Dice {
         this.generator = new Random();
     }
     
+    private int initWithNHangars(){
+        int ret = 1;
+        float rand = this.generator.nextFloat();
+        if (rand < NHANGARSPROB){
+            ret = 0;
+        }
+        return ret;
+    }
+    
+    private int initWithNWeapons(){
+        int ret = 3;
+        float rand = this.generator.nextFloat();
+        if (rand < NWEAPONSPROB){
+            ret = 1;
+        }
+        else if (NWEAPONSPROB < rand && rand < 2*NWEAPONSPROB ){
+            ret = 2;
+        }
+        
+        return ret;
+    }
     
 }
