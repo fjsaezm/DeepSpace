@@ -33,7 +33,7 @@ class Dice {
         this.generator = new Random();
     }
     
-    private int initWithNHangars(){
+    int initWithNHangars(){
         int ret = 1;
         float rand = this.generator.nextFloat();
         if (rand < NHANGARSPROB){
@@ -42,7 +42,7 @@ class Dice {
         return ret;
     }
     
-    private int initWithNWeapons(){
+    int initWithNWeapons(){
         int ret = 3;
         float rand = this.generator.nextFloat();
         if (rand < NWEAPONSPROB){
@@ -54,5 +54,40 @@ class Dice {
         
         return ret;
     }
+    
+    int initWithNShields(){
+        int ret = 1;
+        float rand = this.generator.nextFloat();
+        if (rand < NSHIELDSPROB){
+            ret = 0;
+        }
+        return ret;
+    }
+    
+     int whoStarts(int nPlayers){
+        return this.generator.nextInt(nPlayers);
+    }
+    
+    GameCharacter firstShot(){
+        GameCharacter ret = GameCharacter.ENEMYSTARSHIP;
+        float rand = this.generator.nextFloat();
+        if (rand < FIRSTSHOTPROB){
+            ret = GameCharacter.SPACESTATION;
+        }
+        return ret;
+        
+    }
+    
+    boolean spaceStationMoves(float speed){
+        boolean ret = false;
+        float rand = this.generator.nextFloat();
+        if (rand < speed){
+            ret = true;
+        }
+        return ret;
+             
+    }
+    
+    
     
 }
