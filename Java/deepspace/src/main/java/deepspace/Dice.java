@@ -13,10 +13,11 @@ import java.util.Random;
  */
 class Dice {
     
-    private final float HANGARPROBVALUE = 0.25f;
-    private final float SHIELDPROBVALUE = 0.25f;
-    private final float WEAPONPROBVALUE = 0.25f;
-    private final float FIRSTSHOTPROBVALUE = 0.25f;
+    // Avoiding "magic numbers"
+    private static final float HANGARPROBVALUE = 0.25f;
+    private static final float SHIELDPROBVALUE = 0.25f;
+    private static final float WEAPONPROBVALUE = 0.33f;
+    private static final float FIRSTSHOTPROBVALUE = 0.5f;
     
     private final float NHANGARSPROB;
     private final float NSHIELDSPROB;
