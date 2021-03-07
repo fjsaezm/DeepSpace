@@ -1,6 +1,6 @@
 #encoding:utf-8
 
-module deepspace
+module Deepspace
 
     class Loot
 
@@ -28,7 +28,7 @@ module deepspace
             @nHangars
         end
 
-        def nSupplies
+        def nMedals
             @nMedals
         end
     end

@@ -1,6 +1,8 @@
 #encoding:utf-8
 
-module deepspace
+require_relative 'GameCharacter.rb'
+
+module Deepspace
 
     class Dice
 
@@ -13,7 +15,7 @@ module deepspace
             @NHANGARSPROB = NHANGARSPROBCONST
             @NSHIELDSPROB = NSHIELDSPROBCONST
             @NWEAPONSPROB = NWEAPONSPROBCONST
-            @FIRSTSHOTPROB = FIRST
+            @FIRSTSHOTPROB = FIRSTSHOTPROBCONST
             @generator = Random.new
         end
 
@@ -30,10 +32,10 @@ module deepspace
         def initWithNWeapons()
             ret = 3
             r = @generator.rand
-            if r < @NHANGARSPROB
+            if r < @NWEAPONSPROB
                 ret = 1
                 
-            elsif @NHANGARSPROB < r and r < 2*@NHANGARSPROB
+            elsif @NWEAPONSPROB < r and r < 2*@NWEAPONSPROB
                 ret = 2
             end
 
@@ -51,7 +53,28 @@ module deepspace
         end
 
         def whoStarts(n)
-            @generator.(n)
+            @generator.rand(n)
+        end
+
+        def firstShot
+
+          ret = GameCharacter::ENEMYSTARSHIP
+          r = @generator.rand
+          if r < @FIRSTSHOTPROB
+            ret = GameCharacter::SPACESTATION
+          end
+
+          ret
+         
+
+        end
+
+        def spaceStationMoves(speed)
+          r = @generator.rand
+          ret = false
+          if r < speed
+            ret = true
+          end
         end
     end
 

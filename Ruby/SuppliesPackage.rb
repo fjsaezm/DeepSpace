@@ -1,6 +1,6 @@
 #encoding:utf-8
 
-module deepspace
+module Deepspace
 
     class SuppliesPackage
 

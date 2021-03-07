@@ -33,9 +33,6 @@ public class TestP1 {
         System.out.format("\nMedals obtained: %d\n", l.getNMedals());
         System.out.format("\nHangars obtained: %d\n", l.getNHangars());
 
-        System.out.format("\nShield booster: %f\n", booster.getBoost());
-        System.out.format("\nShield uses: %d\n", booster.getUses());
-        
         System.out.format("\n Power of the weapon obtained in supplies: %f\n", supplies.getAmmoPower());
         System.out.format("\nPower of the shield obtained in supplies: %f\n", supplies.getShieldPower());
         System.out.format("\nFuel obtained in the supplies: %f\n", supplies.getFuelUnits());

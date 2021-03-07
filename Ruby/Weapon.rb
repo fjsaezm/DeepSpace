@@ -1,6 +1,8 @@
 #encoding:utf-8
 
-module deepspace
+require_relative 'WeaponType.rb'
+
+module Deepspace
 
     class Weapon
 

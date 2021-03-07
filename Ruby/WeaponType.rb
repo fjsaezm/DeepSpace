@@ -1,6 +1,6 @@
 #encoding:utf-8
 
-module deepspace
+module Deepspace
 
     module WeaponType
 
@@ -15,9 +15,9 @@ module deepspace
             end
         end
 
-        LASER = WeaponType(2.0)
-        MISSILE = WeaponType(3.0)
-        PLASMA = WeaponType(4.0)
+        LASER = Type.new(2.0)
+        MISSILE = Type.new(3.0)
+        PLASMA = Type.new(4.0)
 
 
     end
