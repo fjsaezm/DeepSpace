@@ -14,6 +14,7 @@ class SuppliesPackage {
     private float ammoPower;
     private float fuelUnits;
     private float shieldPower;
+   
 
     SuppliesPackage(float ammoPower, float fuelUnits, float shieldPower) {
         this.ammoPower = ammoPower;
@@ -37,6 +38,11 @@ class SuppliesPackage {
 
     public float getShieldPower() {
         return shieldPower;
+    }
+    
+    public String toString(){
+        String s = String.format("This Supplies package has: ammoPower = %f , fuelUnits = %f , shieldPower = %f .", ammoPower, fuelUnits , shieldPower);
+        return s;
     }
     
     

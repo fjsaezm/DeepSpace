@@ -20,6 +20,7 @@ public class TestP1 {
         Weapon w = new Weapon("Gun", WeaponType.MISSILE, 0);
         Dice d = new Dice();
         
+        System.out.println(l.toString());
         System.out.format("\nType of weapon %s\n", w.getType());
         System.out.format("\nWeapon Usages: %d\n", w.getUses());
         System.out.format("\nWeapon Power: %f\n", w.power());
@@ -66,10 +67,10 @@ public class TestP1 {
         }
         
         System.out.println("initWithNHangars " + nInitHangars + " (the average should be 75)");
-        System.out.println("initWeapons3 " + nInitWeapons3 + " (the average should be 100-2*25 = 50)");
-        System.out.println("initWeapons2 " + nInitWeapons2 + " (the average should be 25");
-        System.out.println("initWeapons1 " + nInitWeapons1 + " (the average should be 25");
-        System.out.println("initNShields " + nInitShields + " ( the average should be 75");
+        System.out.println("initWeapons3 " + nInitWeapons3 + " (the average should be 100-2*33 = 33)");
+        System.out.println("initWeapons2 " + nInitWeapons2 + " (the average should be 33)");
+        System.out.println("initWeapons1 " + nInitWeapons1 + " (the average should be 33)");
+        System.out.println("initNShields " + nInitShields + " ( the average should be 75)");
         System.out.println("nMoves " + nMoves + " (the average should be 50)");
         
     }

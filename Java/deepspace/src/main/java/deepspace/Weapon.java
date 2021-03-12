@@ -14,6 +14,8 @@ class Weapon {
     private WeaponType type;
     private int uses;
 
+    
+    
     Weapon(String name, WeaponType type, int uses) {
         this.name = name;
         this.type = type;
@@ -47,5 +49,14 @@ class Weapon {
         }
         
         return ret;
+    }
+    
+    public String toString(){
+        String s = String.format("This weapon has: name = %s , WeaponType = %h , uses = %d .", name,type,uses);
+        return s;
+    }
+    
+    WeaponToUI getUIVersion(){
+        return new WeaponToUI(this);
     }
 }

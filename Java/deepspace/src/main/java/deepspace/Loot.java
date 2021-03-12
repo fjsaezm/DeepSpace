@@ -15,6 +15,7 @@ class Loot {
     private int nShields;
     private int nHangars;
     private int nMedals;
+   
     
     Loot (int nSupplies,int nWeapons,int nShields,int nHangars,int nMedals){
         this.nSupplies = nSupplies;
@@ -43,5 +44,14 @@ class Loot {
 
     public int getNMedals() {
         return nMedals;
+    }
+    
+    public String toString(){
+        String s = String.format("This loot has: nSupplies = %d , nWeapons = %d , nShields = %d , nHangars = %d , nMedals = %d .", nSupplies,nWeapons,nShields,nHangars,nMedals);
+        return s;
+    }
+    
+    LootToUI getUIVersion(){
+        return new LootToUI(this);
     }
 }

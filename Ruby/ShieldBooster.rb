@@ -11,10 +11,7 @@ module Deepspace
         end
 
         def self.newCopy(sb)
-            @name = sb.name
-            @boost = sb.boost
-            @uses = sb.uses
-            self
+            new(sb.name,sb.boost,sb.uses)
         end
 
         def boost

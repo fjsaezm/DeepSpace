@@ -13,10 +13,7 @@ module Deepspace
         end
 
         def self.newCopy(w)
-            @name = w.name
-            @type = w.type
-            @uses = w.uses
-            self
+            new(w.name,w.type,w.uses)
         end
         
         def type

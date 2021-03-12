@@ -16,9 +16,11 @@ module Deepspace
       puts "Main"
       l = Loot.new(1,2,3,4,5)
       supplies = SuppliesPackage.new(7.0,6.0,4.0)
-      booster = ShieldBooster.new("Iron",4.0,1)
+      booster = ShieldBooster.new("Iron",4.0,2)
       w = Weapon.new("Gun",WeaponType::MISSILE,1)
       d = Dice.new
+
+      boosterCopy = ShieldBooster.newCopy(booster)
 
       puts "Weapon type : #{w.type}"
       puts "Weapon usages : #{w.uses}"
@@ -28,6 +30,13 @@ module Deepspace
 
       puts "ShieldBoost : #{booster.boost}"
       puts "Shield uses : #{booster.uses}"
+
+      puts "Copy ShieldUses : #{boosterCopy.uses}"
+      puts "Now I use the copy"
+      boosterCopy.useIt
+
+      puts "Original Usages left: #{booster.uses}"
+      puts "Copy usages left: #{boosterCopy.uses}"
 
       puts "Obtained from loot!!!"
       puts "Supplies obtained : #{l.nSupplies}"

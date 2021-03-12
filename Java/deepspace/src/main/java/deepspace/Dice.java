@@ -90,5 +90,11 @@ class Dice {
     }
     
     
+    public String toString(){
+        String s = "This dice has: NHANGARSPROB = " + NHANGARSPROB + " , NSHIELDSPROB = " + NSHIELDSPROB + " , NWEAPONSPROB = " + NWEAPONSPROB + " , FIRSTSHOTPROB = " + FIRSTSHOTPROB;
+        return s;
+    }
+        
+    
     
 }

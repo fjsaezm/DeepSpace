@@ -13,6 +13,8 @@ class ShieldBooster {
     private String name;
     private float boost;
     private int uses;
+    
+    
 
     ShieldBooster(String name, float boost, int uses) {
         this.name = name;
@@ -43,5 +45,14 @@ class ShieldBooster {
         }
         
         return ret;
+    }
+    
+    public String toString(){
+        String s = String.format("This ShieldBooster has: name = %s , boost = %f , uses = %d .", name,boost,uses);
+        return s;
+    }
+    
+    ShieldToUI getUIVersion(){
+        return new ShieldToUI(this);
     }
 }
