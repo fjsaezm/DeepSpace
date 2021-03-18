@@ -15,7 +15,8 @@ public class EnemyStarShip {
     private String name;
     private float shieldPower;
     private Loot loot;
-
+    private Damage damage;
+    
     public float getAmmoPower() {
         return ammoPower;
     }
@@ -31,11 +32,18 @@ public class EnemyStarShip {
     public Loot getLoot() {
         return loot;
     }
-
-    EnemyStarShip(float ammoPower, String name, float shieldPower) {
-        this.ammoPower = ammoPower;
-        this.name = name;
-        this.shieldPower = shieldPower;
+    
+    public Damage getDamage(){
+        return damage;
+    }
+    
+    EnemyStarShip(String n, float s, float a, Loot l, Damage d) {
+        this.name = n;
+        this.ammoPower = a;
+        this.shieldPower = s;
+        this.loot = l;
+        this.damage = d;
+        
     }
     
     EnemyStarShip(EnemyStarShip e){
@@ -62,9 +70,8 @@ public class EnemyStarShip {
         return ret;
     }
     
-    private EnemyToUI getUIVersion(){
+    public EnemyToUI getUIversion(){
         return new EnemyToUI(this);
     }
-    
-    
+        
 }

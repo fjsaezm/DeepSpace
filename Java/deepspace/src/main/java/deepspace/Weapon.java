@@ -56,7 +56,7 @@ class Weapon {
         return s;
     }
     
-    WeaponToUI getUIVersion(){
+    WeaponToUI getUIversion(){
         return new WeaponToUI(this);
     }
 }

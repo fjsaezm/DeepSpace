@@ -58,7 +58,7 @@ public class SpaceStation {
         return name;
     }
 
-    public int getnMedals() {
+    public int getNMedals() {
         return nMedals;
     }
 
@@ -82,7 +82,7 @@ public class SpaceStation {
         return pendingDamage;
     }
     
-    public SpaceStationToUI getUIVersion(){
+    public SpaceStationToUI getUIversion(){
         return new SpaceStationToUI(this);
     }
     
@@ -91,11 +91,15 @@ public class SpaceStation {
     }
     
     public void cleanUpMountedItems(){
-        
+        for(Weapon w: this.weapons){
+            if(w.getUses() == 0){
+                
+            }
+        }
     }
     
     public void discardHangar(){
-        
+        this.hangar = null;
     }
     
     public void discardshieldBooster(int i){
@@ -103,56 +107,78 @@ public class SpaceStation {
     }
     
     public void discardShieldBoosterInHangar(int i){
-        
+        if(this.hangar != null){
+            this.hangar.removeShieldBooster(i);
+        }
     }
     
     public void discardWeapon(int i){
-        
     }
     
     
     public void discardWeaponInHangar(int i){
-        
+        if(this.hangar != null){
+            this.hangar.removeWeapon(i);
+        }
     }
     
-    public float fire(){
+    /*public float fire(){
         
-    }
+    }*/
     
     public void mountShieldBooster(int i){
-        
+        ShieldBooster b = this.hangar.removeShieldBooster(i);
+        if(b != null){
+            this.shieldBoosters.add(b);
+        }
     }
     
     public void mountWeapon(int i){
-        
+        Weapon w = this.hangar.removeWeapon(i);
+        if(w != null){
+            this.weapons.add(w);
+        }
     }
     
     public void move(){
         this.fuelUnits = min(this.fuelUnits - this.getSpeed(),0f);
     }
     
-    public float protection(){
+    /*public float protection(){
         
-    }
+    }*/
     
     public void receiveHangar(Hangar h){
-        
+        if(this.hangar == null){
+            this.hangar = h;
+        }
     }
     
     public boolean receiveShieldBoosters(ShieldBooster s){
-        
+        boolean ret = false;
+        if(this.hangar!= null){
+            ret = hangar.addShieldBoosters(s);
+        }
+        return ret;
     }
     
-    public ShotResult receiveShot(float shot){
+    /*public ShotResult receiveShot(float shot){
         
-    }
+    }*/
     
     public void receiveSupplies(SuppliesPackage s){
+        this.ammoPower += s.getAmmoPower();
+        this.shieldPower += s.getShieldPower();
+        this.fuelUnits += s.getFuelUnits();
         
     }
     
     public boolean receiveWeapon(Weapon w){
-        
+        boolean ret = false;
+        if(this.hangar!= null){
+            ret = hangar.addWeapon(w);
+        }
+        return ret;
     }
     
     public void setLoot(Loot loot){
@@ -160,11 +186,11 @@ public class SpaceStation {
     }
     
     public void setPendingDamage(Damage d){
-        
+        this.pendingDamage = d.adjust(this.weapons, this.shieldBoosters);
     }
     
     public boolean validState(){
-        
+        return this.pendingDamage.hasNoEffect() || this.pendingDamage == null;
     }
     
     

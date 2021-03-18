@@ -36,7 +36,7 @@ public class Damage {
         
     }
     
-    DamageToUI getUIVersion(){
+    DamageToUI getUIversion(){
         return new DamageToUI(this);
     }
     
@@ -90,11 +90,11 @@ public class Damage {
         return (this.nShields == 0)&& (this.nWeapons == 0) && (this.weapons.size() == 0);
     }
 
-    public int getnShields() {
+    public int getNShields() {
         return nShields;
     }
 
-    public int getnWeapons() {
+    public int getNWeapons() {
         return nWeapons;
     }
 

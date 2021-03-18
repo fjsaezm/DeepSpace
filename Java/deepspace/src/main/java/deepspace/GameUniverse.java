@@ -25,56 +25,75 @@ public class GameUniverse {
     private GameStateController gameState;
     
     GameUniverse(){
+        this.gameState = new GameStateController();
+        this.dice = new Dice();
+        this.turns = 0;
+    }
+    
+    
+    
+    /*CombatResult combat(SpaceStation station, EnemyStarShip enemy){
         
     }
     
-    CombatResult combat(SpaceStation station, EnemyStarShip enemy){
+    public CombatResult combat(){
         
-    }
+    }*/
     
     public void discardHangar(){
-        
+        this.currentSpaceStation.discardHangar();
     }
     
-    public void discardShieldBooster(){
-        
+    public void discardShieldBooster(int i){
+        this.currentSpaceStation.discardshieldBooster(i);
     }
     
     public void discardShieldBoosterInHangar(int i){
-        
+        this.currentSpaceStation.discardShieldBoosterInHangar(i);
     }
     
     public void discardWeapon(int i){
+        this.currentSpaceStation.discardWeapon(i);
     }
     
     public void discardWeaponInhangar(int i){
-        
+        this.currentSpaceStation.discardWeaponInHangar(i);
     }
     
-    public GameState getState(){
+    /*public GameState getState(){
         return this.gameState;
-    }
+    }*/
     
-    public GameUniverseToUI getUIVersion(){
-    }
+    /*public GameUniverseToUI getUIVersion(){
+        return new GameUniverseToUI(this);
+    }*/
     
     public boolean haveAWinner(){
-        
+        boolean ret = false;
+        if (currentSpaceStation.getNMedals() >= WIN){
+            ret = true;
+        }
+        return ret;
     }
     
-    public void init(ArrayList<String> names){
+    /*public void init(ArrayList<String> names){
         
-    }
+    }*/
     
     public void mountShieldBooster(int i){
-        
+        if(gameState.getState() == GameState.INIT || gameState.getState() == GameState.AFTERCOMBAT){
+            currentSpaceStation.mountShieldBooster(i);
+        }
     }
     
     public void mountWeapon(int i){
         
+        if(gameState.getState() == GameState.INIT || gameState.getState() == GameState.AFTERCOMBAT){
+            currentSpaceStation.mountWeapon(i);
+        }
     }
     
-    public boolean nextTurn(){
+   /*public boolean nextTurn(){
         
-    }
+    }*/
 }

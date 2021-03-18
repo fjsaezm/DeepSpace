@@ -30,7 +30,7 @@ public class Hangar {
         this.shieldBoosters = new ArrayList(h.shieldBoosters);
     }
     
-    HangarToUI getUIVersion(){
+    HangarToUI getUIversion(){
         return new HangarToUI(this);
     }
     
