@@ -6,23 +6,17 @@ module Deepspace
 
     class Weapon
 
-        def initialize(_name,_type,_uses)
-            @name = _name
-            @type = _type
-            @uses = _uses
+        def initialize(name,type,uses)
+            @name = name
+            @type = type
+            @uses = uses
         end
 
         def self.newCopy(w)
             new(w.name,w.type,w.uses)
         end
         
-        def type
-            @type
-        end
 
-        def uses
-            @uses
-        end
         
         def power()
             @type.power()
@@ -41,6 +35,8 @@ module Deepspace
         def to_s()
             "This weapon is:" + @name + ", type:" + @type + ", uses:" + @uses
         end
+
+        attr_reader :type,:uses
     end
 
 end
