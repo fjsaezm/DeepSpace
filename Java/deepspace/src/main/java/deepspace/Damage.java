@@ -17,6 +17,10 @@ public class Damage {
     private int nWeapons;
     private ArrayList<WeaponType> weapons;
     
+    public String toString(){
+        return "Shields: " +this.nShields + " , nWeapons: " + this.nWeapons;
+    }
+    
     Damage(int w, int s){
         this.nShields = s;
         this.nWeapons = w;

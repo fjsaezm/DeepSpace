@@ -24,6 +24,12 @@ public class GameUniverse {
     private SpaceStation currentSpaceStation;
     private GameStateController gameState;
     
+    public String toString(){
+        return "In this universe, we have: turns=" + turns + ", currentStationIndex="+currentStationIndex + ", the dice is:" + dice.toString() + 
+                ", the enemy is:" + currentEnemy.toString() + ", the current spaceStation is:" + currentSpaceStation.toString() ;
+    }
+    
+    
     GameUniverse(){
         this.gameState = new GameStateController();
         this.dice = new Dice();

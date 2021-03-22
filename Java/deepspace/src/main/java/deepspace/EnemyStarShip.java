@@ -17,6 +17,11 @@ public class EnemyStarShip {
     private Loot loot;
     private Damage damage;
     
+    public String toString(){
+        return "This EnemyStarship has (name,ammoPower,shieldPower,loot,damage) ="
+                + " ("+ name + "," + ammoPower + "," + shieldPower + "," + loot.toString() + "," + damage.toString()+")";
+    }
+    
     public float getAmmoPower() {
         return ammoPower;
     }

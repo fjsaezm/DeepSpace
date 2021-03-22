@@ -17,6 +17,10 @@ public class Hangar {
     private ArrayList<Weapon> weapons;
     private ArrayList<ShieldBooster> shieldBoosters;
     
+    public String toString(){
+        return "This hangar can store " + maxElements + ", and currently it has " + weapons.size() + " weapons and " + shieldBoosters.size() + " shieldBoosters";
+    }
+    
     Hangar(int capacity){
         this.maxElements = capacity;
         weapons = new ArrayList<Weapon>();

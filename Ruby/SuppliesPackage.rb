@@ -25,6 +25,10 @@ module Deepspace
         def shieldPower
             @shieldPower
         end
+
+        def to_s()
+            "This Supplies package gives fuel:" + @fuel + ", ammoPower:" + @ammoPower + ", shieldPower:" + @shieldPower
+        end
         
 
         

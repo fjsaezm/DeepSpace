@@ -31,6 +31,10 @@ module Deepspace
         def nMedals
             @nMedals
         end
+
+        def to_s()
+            "This Loot has:" + @nSupplies + " supplies," + @nWeapons + " weapons, " + @nShields + " shields, " + @nHangars  +" hangars, " + @nMedals + " medals"
+        end
     end
 
 end

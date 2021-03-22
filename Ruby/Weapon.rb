@@ -37,6 +37,10 @@ module Deepspace
 
             ret
         end
+
+        def to_s()
+            "This weapon is:" + @name + ", type:" + @type + ", uses:" + @uses
+        end
     end
 
 end

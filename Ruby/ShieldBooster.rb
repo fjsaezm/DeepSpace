@@ -32,6 +32,9 @@ module Deepspace
             ret
         end
 
+        def to_s()
+            "This Shield Booster is:" + @name + ", with boost:" + @boost + ", and uses:" + @uses
+        end
         
     end
 

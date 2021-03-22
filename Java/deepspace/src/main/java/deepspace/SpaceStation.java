@@ -27,6 +27,10 @@ public class SpaceStation {
     private Hangar hangar; // this will be o or 1
     private Damage pendingDamage; // this will be 0 or 1
     
+    public String toString(){
+        return String.format("This SpaceStation has (ammoPower,fuelUnits,name,nMedals,shieldPower)=(%f,%f,%s,%d,%f)",ammoPower,fuelUnits,name,nMedals,shieldPower) +
+                "and also:" + hangar.toString() + " and its pending damage is " + pendingDamage.toString();
+    }
     
     private void assignFuelValue(float f){
         this.fuelUnits = min(f,MAXFUEL);
