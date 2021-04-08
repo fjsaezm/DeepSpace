@@ -47,6 +47,10 @@ public class SpaceStation {
         this.ammoPower = supplies.getAmmoPower();
         this.fuelUnits = supplies.getFuelUnits();
         this.shieldPower = supplies.getShieldPower();
+        this.weapons = new ArrayList<Weapon>();
+        this.shieldBoosters = new ArrayList<ShieldBooster>();
+        this.pendingDamage = null;
+        this.hangar = null;
         
     }
 
@@ -97,7 +101,12 @@ public class SpaceStation {
     public void cleanUpMountedItems(){
         for(Weapon w: this.weapons){
             if(w.getUses() == 0){
-                
+                this.weapons.remove(w);
+            }
+        }
+        for(ShieldBooster s: this.shieldBoosters){
+            if(s.getUses() == 0){
+                this.shieldBoosters.remove(s);
             }
         }
     }
@@ -145,7 +154,7 @@ public class SpaceStation {
     }
     
     public void move(){
-        this.fuelUnits = min(this.fuelUnits - this.getSpeed(),0f);
+        this.fuelUnits = Float.max(this.fuelUnits - this.getSpeed(),0f);
     }
     
     /*public float protection(){
@@ -158,7 +167,7 @@ public class SpaceStation {
         }
     }
     
-    public boolean receiveShieldBoosters(ShieldBooster s){
+    public boolean receiveShieldBooster(ShieldBooster s){
         boolean ret = false;
         if(this.hangar!= null){
             ret = hangar.addShieldBoosters(s);

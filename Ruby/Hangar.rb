@@ -13,7 +13,10 @@ module Deepspace
         end
 
         def self.newCopy(h)
-            new(h.maxElements)
+            ret = self.new(h.maxElements)
+            ret.weapons = h.weapons.clone()
+            ret.shieldBoosters = h.shieldBoosters.clone()
+            ret
         end
         
         def getUIversion
@@ -22,7 +25,7 @@ module Deepspace
 
         
         def spaceAvailable
-            @shieldBoosters.length() + @weapons.length() < @maxElements
+            (@shieldBoosters.length() + @weapons.length()) < @maxElements
         end
 
         def addWeapon(w)

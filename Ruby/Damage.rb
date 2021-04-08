@@ -43,6 +43,47 @@ module Deepspace
             ret
         end
 
+        def adjust(w,s)
+            nShields = [@nShields,s].min
+            if @weapons.length == 0:
+                ret = self.newNumericWeapons([@nWeapons,w.length].min,nShields)
+            else
+                copy = w.clone()
+                newWeapons = Array.new
+                weapons.each do |wType|
+                    i = arrayContainsType(copy,wType)
+                    if i != -1
+                        newWeapons << wType
+                        copy.delete(wType)
+                    end
+                end 
+
+                ret = self.newSpecificWeapons(nShields, newWeapons )
+            end
+        end
+
+        def discardWeapon(w)
+            if @weapons.include? w.getType
+                @weapons.delete(w.getType)
+            end 
+
+            if @nWeapons > 0
+                @nWeapons = @nWeapons -1
+            end
+            
+        end
+
+        def discardShieldBooster
+            if @nShields > 0
+                @nShields = @nShields - 1
+            end
+        end
+
+        def hasNoEffect
+            (@nShields == 0) and (@nWeapons == 0) and (@weapons.length == 0)
+        end
+
+
 
         attr_reader :nShields, :nWeapons, :weapons
         private :arrayContainsType

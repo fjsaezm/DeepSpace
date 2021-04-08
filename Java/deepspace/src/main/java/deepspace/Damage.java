@@ -58,30 +58,43 @@ public class Damage {
     }
     
     public Damage adjust(ArrayList<Weapon> w, ArrayList<ShieldBooster> s){
-        ArrayList<WeaponType> newWeapons = new ArrayList<WeaponType>();
-        ArrayList<WeaponType> old = new ArrayList<WeaponType>(this.weapons);
-        int newShields = min(s.size(),this.nShields);
-        for(Weapon received : w){
-            WeaponType t = received.getType();
-            if(old.contains(t)){
-                old.remove(t);
-                newWeapons.add(t);
+        
+        if (this.weapons.size() > 0){
+            // Vector to introduce the adjusted weapontypes
+            ArrayList<WeaponType> newWeapons = new ArrayList<WeaponType>();
+            // Copy of the old vector 
+            ArrayList<Weapon> old = new ArrayList<Weapon>(w);
+
+            int newShields = min(s.size(),this.nShields);
+
+            for(WeaponType received : this.weapons){
+                
+                if(arrayContainsType(old,received)  != -1){
+                    newWeapons.add(received);
+                    old.remove(received);
+                    
+                }
             }
+            return new Damage(newWeapons,newShields);
         }
-        return new Damage(newWeapons,newShields);
+        else{
+            int newShields = min(s.size(), this.nShields);
+            int newWeapons = min(w.size(),this.nWeapons);
+            
+            return new Damage(newWeapons,newShields);
+        }
         
     }
     
     public void discardWeapon(Weapon w){
         WeaponType t = w.getType();
-        if(this.weapons.contains(t)){
+        
+        if(this.weapons.contains(t))
             this.weapons.remove(t);
-        }
-        else{
-            if(this.nWeapons > 0){
+           
+        if(this.nWeapons > 0)
                 this.nWeapons -= 1;
-            }
-        }
+            
     }
     
     public void discardShieldBooster(){

@@ -47,32 +47,42 @@ public class GameUniverse {
     }*/
     
     public void discardHangar(){
-        this.currentSpaceStation.discardHangar();
+        if(gameState.getState() == GameState.INIT || gameState.getState() == GameState.AFTERCOMBAT){
+            this.currentSpaceStation.discardHangar();
+        }
     }
     
     public void discardShieldBooster(int i){
-        this.currentSpaceStation.discardshieldBooster(i);
+        if(gameState.getState() == GameState.INIT || gameState.getState() == GameState.AFTERCOMBAT){
+            this.currentSpaceStation.discardshieldBooster(i);
+        }
     }
     
     public void discardShieldBoosterInHangar(int i){
-        this.currentSpaceStation.discardShieldBoosterInHangar(i);
+        if(gameState.getState() == GameState.INIT || gameState.getState() == GameState.AFTERCOMBAT){
+            this.currentSpaceStation.discardShieldBoosterInHangar(i);
+        }
     }
     
     public void discardWeapon(int i){
-        this.currentSpaceStation.discardWeapon(i);
+        if(gameState.getState() == GameState.INIT || gameState.getState() == GameState.AFTERCOMBAT){
+            this.currentSpaceStation.discardWeapon(i);
+        }
     }
     
     public void discardWeaponInhangar(int i){
-        this.currentSpaceStation.discardWeaponInHangar(i);
+        if(gameState.getState() == GameState.INIT || gameState.getState() == GameState.AFTERCOMBAT){
+            this.currentSpaceStation.discardWeaponInHangar(i);
+        }
     }
     
-    /*public GameState getState(){
+    public GameStateController getState(){
         return this.gameState;
-    }*/
+    }
     
-    /*public GameUniverseToUI getUIVersion(){
-        return new GameUniverseToUI(this);
-    }*/
+    public GameUniverseToUI getUIVersion(){
+        return new GameUniverseToUI(this.currentSpaceStation,this.currentEnemy);
+    }
     
     public boolean haveAWinner(){
         boolean ret = false;

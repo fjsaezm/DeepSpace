@@ -16,14 +16,6 @@ module Deepspace
             new(w.name,w.type,w.uses)
         end
         
-        def type
-            @type
-        end
-
-        def uses
-            @uses
-        end
-        
         def power()
             @type.power()
         end
@@ -41,6 +33,8 @@ module Deepspace
         def to_s()
             "This weapon is:" + @name + ", type:" + @type + ", uses:" + @uses
         end
+
+        attr_reader :type, :uses
     end
 
 end
