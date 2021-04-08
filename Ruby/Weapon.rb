@@ -6,10 +6,10 @@ module Deepspace
 
     class Weapon
 
-        def initialize(_name,_type,_uses)
-            @name = _name
-            @type = _type
-            @uses = _uses
+        def initialize(name,type,uses)
+            @name = name
+            @type = type
+            @uses = uses
         end
 
         def self.newCopy(w)

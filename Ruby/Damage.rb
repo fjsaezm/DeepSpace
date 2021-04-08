@@ -12,9 +12,8 @@ module Deepspace
             @nShields = s
             @nWeapons = w 
             @weapons = weapons
-
         end
-
+        
         def self.newNumericWeapons(w,s)
             new(w,s,Array.new)
         end
@@ -35,7 +34,7 @@ module Deepspace
         def arrayContainsType(w,t)
             ret = -1
             w.each do |weapon|
-                if weapon.getType == t
+                if weapon.type == t
                     ret = w.index(weapon)
                     break
                 end

@@ -1,8 +1,14 @@
 #encoding:utf-8
 
+<<<<<<< HEAD
 require_relative 'SpaceStationToUI'
 require_relative 'SuppliesPackage'
 require_relative 'CardDealer'
+=======
+require_relative 'SuppliesPackage'
+require_relative 'SpaceStationToUI'
+require_relative 'Damage'
+>>>>>>> caf88cdc2ecdb576a5d11c58c5327f2c2daf71fa
 
 module Deepspace
 
@@ -13,15 +19,14 @@ module Deepspace
         
 
         def initialize(n,supplies)
-            
-            @ammoPower = 
-            @fuelUnits = 
             @name = n
+            @ammoPower = supplies.ammoPower
+            @fuelUnits = supplies.fuelUnits
             @nMedals = 0
-            @shieldPower = 0
-            @hangar = nil
-            @shieldBoosters = Array.new
+            @shieldPower = supplies.shieldPower
             @weapons = Array.new
+            @shieldBoosters = Array.new
+            @hangar = nil
             @pendingDamage = nil
         end
 
@@ -37,10 +42,12 @@ module Deepspace
                     @shieldBoosters.delete(s)
                 end
             end
-        end
 
-        def cleanUpMountedItems
 
+        def cleanPendingDamage
+            if @pendingDamage.hasNoEffect
+                @pendingDamage = nil
+            end
         end
 
         def discardHangar(i)
@@ -69,6 +76,10 @@ module Deepspace
 
         end
 
+        def getSpeed
+
+        end
+
         def getUIversion
             SpaceStationToUI.new(self)
         end
@@ -82,7 +93,6 @@ module Deepspace
         end
 
         def move
-
         end
 
         def protection
@@ -113,11 +123,12 @@ module Deepspace
 
         end
 
-        def assignFuelValue(f) #
+        def assignFuelValue(f) 
             @fuelUnits = [f,@@MAXFUEL].min
         end
 
-        def cleanPendingDamage #private
+        def cleanPendingDamage 
+            #Not done
             @pendingDamage=nil
         end
 
