@@ -16,11 +16,11 @@ module Deepspace
             new(w.name,w.type,w.uses)
         end
         
-        def power()
+        def power
             @type.power()
         end
 
-        def useIt()
+        def useIt
             ret = 1.0
             if @uses > 0
                 @uses = @uses - 1
