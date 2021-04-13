@@ -1,14 +1,9 @@
 #encoding:utf-8
 
-<<<<<<< HEAD
 require_relative 'SpaceStationToUI'
 require_relative 'SuppliesPackage'
 require_relative 'CardDealer'
-=======
-require_relative 'SuppliesPackage'
-require_relative 'SpaceStationToUI'
 require_relative 'Damage'
->>>>>>> caf88cdc2ecdb576a5d11c58c5327f2c2daf71fa
 
 module Deepspace
 
@@ -120,6 +115,9 @@ module Deepspace
         end
 
         def validState
+            if pendingDamage != nil
+
+            
 
         end
 
