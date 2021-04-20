@@ -84,6 +84,8 @@ class CardDealer {
         suppliesPackages.add(new SuppliesPackage(3,50,3));    
         suppliesPackages.add(new SuppliesPackage(40,100,40));
         suppliesPackages.add(new SuppliesPackage(100,100,100));
+        // Created by me
+        suppliesPackages.add(new SuppliesPackage(2,50,50));
     }
     private void createWeapons() {
        weapons.add(new Weapon("Láser infinito",WeaponType.LASER,100));
@@ -110,7 +112,10 @@ class CardDealer {
        weapons.add(new Weapon("Cañón ACME",WeaponType.PLASMA,1)); 
        weapons.add(new Weapon("Cañón ACME",WeaponType.PLASMA,1)); 
        weapons.add(new Weapon("Cañón ACME",WeaponType.PLASMA,1)); 
-       weapons.add(new Weapon("Cañón mejorado",WeaponType.PLASMA,2));       
+       weapons.add(new Weapon("Cañón mejorado",WeaponType.PLASMA,2));      
+       
+       // Created by me
+       weapons.add(new Weapon("OMEGA PLASMA", WeaponType.PLASMA,50));
        
     }
     private void createShieldBoosters() {
@@ -125,6 +130,9 @@ class CardDealer {
        shieldBoosters.add(new ShieldBooster("Escudo ACME",1.5f,2));
        shieldBoosters.add(new ShieldBooster("Escudo normal",3.0f,2));
        shieldBoosters.add(new ShieldBooster("Escudo normal",4.0f,2));
+       
+       // Created by me
+       shieldBoosters.add(new ShieldBooster("Pasa el corte",5.0f,5));
     }
     private void createHangars() {
         hangars.add(new Hangar(4));
@@ -136,6 +144,9 @@ class CardDealer {
         hangars.add(new Hangar(2));
         hangars.add(new Hangar(1));
         hangars.add(new Hangar(1));
+        
+        // Created by me
+        hangars.add(new Hangar(6));
     }
     private void createEnemies() {
         Loot regularLoot0=new Loot(1,2,1,1,1);
@@ -204,7 +215,10 @@ class CardDealer {
         enemies.add(new EnemyStarShip("Enemigo difícil 0",200,100,goodLoot,hardSpecificDamage0));          
         enemies.add(new EnemyStarShip("Enemigo difícil 1",100,200,goodLoot,hardSpecificDamage0));   
         
-        enemies.add(new EnemyStarShip("Enemigo imposible",500,500,goodLoot,hardSpecificDamage0));              
+        enemies.add(new EnemyStarShip("Enemigo imposible",500,500,goodLoot,hardSpecificDamage0));           
+        
+        // Added by me
+        enemies.add(new EnemyStarShip("Enemigo callejero",150,150,regularLoot1,softSpecificDamage2));
     }
 }
 

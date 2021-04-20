@@ -5,6 +5,7 @@
  */
 package deepspace;
 
+import static java.lang.Float.max;
 import static java.lang.Float.min;
 import java.util.ArrayList;
 
@@ -116,7 +117,13 @@ public class SpaceStation {
     }
     
     public void discardshieldBooster(int i){
-        
+        if(i >= 0 && i < this.shieldBoosters.size()){
+            ShieldBooster s  = this.shieldBoosters.remove(i);
+            if(this.pendingDamage != null){
+                this.pendingDamage.discardShieldBooster();
+                cleanPendingDamage();
+            }
+        }
     }
     
     public void discardShieldBoosterInHangar(int i){
@@ -126,6 +133,13 @@ public class SpaceStation {
     }
     
     public void discardWeapon(int i){
+        if(i >= 0 && i < this.weapons.size()){
+            Weapon w  = this.weapons.remove(i);
+            if(this.pendingDamage != null){
+                this.pendingDamage.discardWeapon(w);
+                cleanPendingDamage();
+            }
+        }
     }
     
     
@@ -135,9 +149,13 @@ public class SpaceStation {
         }
     }
     
-    /*public float fire(){
-        
-    }*/
+    public float fire(){
+        float factor = 1.0f;
+        for(Weapon w: this.weapons){
+            factor *= w.useIt();
+        }
+        return factor*this.ammoPower;
+    }
     
     public void mountShieldBooster(int i){
         ShieldBooster b = this.hangar.removeShieldBooster(i);
@@ -157,9 +175,13 @@ public class SpaceStation {
         this.fuelUnits = Float.max(this.fuelUnits - this.getSpeed(),0f);
     }
     
-    /*public float protection(){
-        
-    }*/
+    public float protection(){
+        float factor = 1.0f;
+        for(ShieldBooster s: this.shieldBoosters){
+            factor *= s.useIt();
+        }
+        return factor*this.shieldPower;
+    }
     
     public void receiveHangar(Hangar h){
         if(this.hangar == null){
@@ -175,9 +197,17 @@ public class SpaceStation {
         return ret;
     }
     
-    /*public ShotResult receiveShot(float shot){
-        
-    }*/
+    public ShotResult receiveShot(float shot){
+        ShotResult ret = ShotResult.DONOTRESIST;
+        if (this.protection() >= shot){
+            this.shieldPower -= max(0.0f,this.SHIELDLOSSPERUNITSHOT*shot);
+            ret = ShotResult.RESIST;
+        }   
+        else{
+            this.shieldPower = 0.0f;
+        }
+        return ret;
+    }
     
     public void receiveSupplies(SuppliesPackage s){
         this.ammoPower += s.getAmmoPower();
@@ -195,7 +225,34 @@ public class SpaceStation {
     }
     
     public void setLoot(Loot loot){
+        CardDealer dealer = CardDealer.getInstance();
         
+        if(loot.getNHangars() > 0){
+            Hangar hangar = dealer.nextHangar();
+            this.receiveHangar(hangar);
+        }
+        
+        int elements = loot.getNSupplies();
+        for(int i = 0; i < elements; i++){
+            SuppliesPackage sup = dealer.nextSuppliesPackage();
+            this.receiveSupplies(sup);
+        }
+        
+        elements = loot.getNWeapons();
+        for(int i = 0; i < elements; i++){
+            Weapon weap = dealer.nextWeapon();
+            this.receiveWeapon(weap);
+        }
+        
+        elements = loot.getNShields();
+        for(int i = 0; i < elements; i++){
+            ShieldBooster sh = dealer.nextShieldBooster();
+            this.receiveShieldBooster(sh);
+        }
+        
+        this.nMedals += loot.getNMedals();
+        
+            
     }
     
     public void setPendingDamage(Damage d){

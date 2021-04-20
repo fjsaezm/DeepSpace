@@ -138,7 +138,7 @@ class CardDealer
         @hangars.add(Hangar.new(1))
         @hangars.add(Hangar.new(1))
         # Created By Me
-        @hangars.add(Hangar.new(3))
+        @hangars.add(Hangar.new(6))
     end
     
     def createEnemies() 
