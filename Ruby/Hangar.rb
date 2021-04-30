@@ -13,9 +13,13 @@ module Deepspace
         end
 
         def self.newCopy(h)
-            ret = self.new(h.maxElements)
-            ret.weapons = h.weapons.clone()
-            ret.shieldBoosters = h.shieldBoosters.clone()
+            ret = new(h.maxElements)
+            for i in (0...h.shieldBoosters.size)
+                ret.addShieldBooster(h.shieldBoosters[i])
+            end
+            for i in (0...h.weapons.size)
+                ret.addWeapon(h.weapons[i])
+            end
             ret
         end
         
@@ -29,27 +33,27 @@ module Deepspace
         end
 
         def addWeapon(w)
-            ret = False
-            if self.spaceAvailable
+            ret = false
+            if spaceAvailable()
                 @weapons << w
-                ret = True
+                ret = true
             end
             ret
         end
 
         def addShieldBooster(s)
-            ret = False
+            ret = false
             if self.spaceAvailable
                 @shieldBoosters << s
-                ret = True
+                ret = true
             end
             ret
         end
 
         def removeWeapon(i)
             ret = nil
-            if @weapons.length < i
-                ret = @weapons[i]
+            if i >= 0 and i < @weapons.length 
+                ret = @weapons[i].clone()
                 @weapons.delete_at(i)
             end
             ret
@@ -57,8 +61,8 @@ module Deepspace
 
         def removeShieldBooster(i)
             ret = nil
-            if @shieldBoosters.length < i
-                ret = @shieldBoosters[i]
+            if i >= 0 and i < @shieldBoosters.length 
+                ret = @shieldBoosters[i].clone()
                 @shieldBoosters.delete_at(i)
             end
             ret

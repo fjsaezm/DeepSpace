@@ -56,6 +56,7 @@ public class EnemyStarShip {
         this.name = e.name;
         this.shieldPower = e.shieldPower;
         this.loot = e.loot;
+        this.damage = e.damage;
         
     }
     

@@ -77,7 +77,6 @@ class TextMainView
       when Command::DISCARDSHIELDS 
         discardMountedElements(Element::SHIELD)
       when Command::COMBAT 
-        puts "Combatiendo"
         CT::Controller.instance.combat()
       when Command::NEXTTURN 
         CT::Controller.instance.nextTurn()
@@ -117,6 +116,7 @@ class TextMainView
   def showView() 
     while true # Hasta que se elija en el menú  Salir
       updateView()
+
       command = Command::EXIT;
       case @state
         when DS::GameState::INIT

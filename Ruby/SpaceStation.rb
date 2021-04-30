@@ -16,7 +16,7 @@ module Deepspace
         def initialize(n,supplies)
             @name = n
             @ammoPower = supplies.ammoPower
-            @fuelUnits = supplies.fuelUnits
+            assignFuelValue(supplies.fuelUnits)
             @nMedals = 0
             @shieldPower = supplies.shieldPower
             @weapons = Array.new
@@ -58,11 +58,11 @@ module Deepspace
 
         def discardShieldBooster(i)
             if i >= 0 and i < @shieldBoosters.length
-                s = @shieldBoosters.remove(i)
+                s = @shieldBoosters.delete_at(i)
 
                 if @pendingDamage != nil
-                    @pendingDamage.discardWeapon(s)
-                    @pendingDamage.cleanPendingDamage
+                    @pendingDamage.discardShieldBooster
+                    cleanPendingDamage()
                 end
             end
 
@@ -70,17 +70,17 @@ module Deepspace
 
         def discardShieldBoosterInHangar(i)
             if @hangar != nil
-                @hangar.shieldBooster(i)
+                @hangar.discardShieldBooster(i)
             end
         end
 
         def discardWeapon(i)
             if i >= 0 and i < @weapons.length
-                w = @weapons.remove(i)
+                w = @weapons.delete_at(i)
 
                 if @pendingDamage != nil
                     @pendingDamage.discardWeapon(w)
-                    @pendingDamage.cleanPendingDamage
+                    cleanPendingDamage()
                 end
             end
         end
@@ -100,7 +100,7 @@ module Deepspace
             factor
         end
 
-        def getSpeed
+        def speed
             @fuelUnits/@@MAXFUEL
         end
 
@@ -110,22 +110,26 @@ module Deepspace
 
         def mountShieldBooster(i)
             if @hangar != nil
-                s = @hangar.mountShieldBooster(i)
-                @shieldBoosters << s
+                s = @hangar.removeShieldBooster(i)
+                if s != nil
+                    @shieldBoosters << s
+                end
             end
         end
 
         def mountWeapon(i)
 
             if @hangar != nil
-                w = @hangar.mountWeapon(i)
-                @weapons << w
+                w = @hangar.removeWeapon(i)
+                if w != nil
+                    @weapons << w
+                end
             end
 
         end
 
         def move
-            @fuelUnits = [@fuelUnits - self.getSpeed,0 ].max
+            @fuelUnits = [@fuelUnits - speed(),0 ].max
         end
 
         def protection
@@ -138,14 +142,14 @@ module Deepspace
         end
 
         def receiveHangar(h)
-            if @hangar = nil
+            if @hangar == nil
                 @hangar = h
             end
 
         end
 
         def receiveShieldBooster(s)
-            ret = False
+            ret = false
             if @hangar != nil
                 ret = @hangar.addShieldBooster(s)
             end
@@ -153,7 +157,7 @@ module Deepspace
         end
 
         def receiveShot(shot)
-            myProtection = self.protection
+            myProtection = protection()
             ret = ShotResult::DONOTRESIST
 
             if myProtection >= shot
@@ -174,7 +178,7 @@ module Deepspace
         end
 
         def receiveWeapon(w)
-            ret = False
+            ret = false 
             if @hangar != nil
                 ret = @hangar.addWeapon(w)
             end
@@ -182,10 +186,10 @@ module Deepspace
         end
 
         def validState
-            ret = True
+            ret = true
             if @pendingDamage != nil
                 if !@pendingDamage.hasNoEffect
-                    ret = False
+                    ret = false
                 end
             end
             ret
@@ -198,29 +202,31 @@ module Deepspace
 
         def setLoot(loot)
 
-            dealer = CardDealer.getInstance()
+            dealer = CardDealer.instance
 
             if loot.nHangars > 0
+                puts "Mira como recivo un hangar"
                 h = dealer.nextHangar
-                self.receiveHangar(h)
+                puts h.inspect
+                receiveHangar(h)
             end
 
             elements = loot.nSupplies
             for i in 0..elements
                 sup = dealer.nextSuppliesPackage
-                self.receiveSupplies(sup)
+                receiveSupplies(sup)
             end
 
             elements = loot.nWeapons
             for i in 0..elements
                 weap = dealer.nextWeapon
-                self.receiveWeapon(weap)
+                receiveWeapon(weap)
             end
 
             elements = loot.nShields
             for i in 0..elements
                 sh = dealer.nextShieldBooster
-                self.receiveShieldBooster(sh)
+                receiveShieldBooster(sh)
             end
 
             @nMedals += loot.nMedals

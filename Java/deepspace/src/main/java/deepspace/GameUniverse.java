@@ -30,7 +30,7 @@ public class GameUniverse {
     }
     
     
-    GameUniverse(){
+    public GameUniverse(){
         this.gameState = new GameStateController();
         this.dice = new Dice();
         this.turns = 0;

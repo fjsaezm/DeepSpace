@@ -79,7 +79,7 @@ public class Hangar {
     
     public ShieldBooster removeShieldBooster(int s){
         ShieldBooster ret = null;
-        if( s < this.shieldBoosters.size()){
+        if( s >= 0 && s < this.shieldBoosters.size()){
             ret = this.shieldBoosters.get(s);
             this.shieldBoosters.remove(s);
         }
@@ -89,7 +89,7 @@ public class Hangar {
     
     public Weapon removeWeapon(int w){
         Weapon ret = null;
-        if( w < this.weapons.size()){
+        if( w >= 0 && w < this.weapons.size()){
             ret = this.weapons.get(w);
             this.weapons.remove(w);
         }

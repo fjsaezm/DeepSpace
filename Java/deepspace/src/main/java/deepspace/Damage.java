@@ -16,6 +16,7 @@ public class Damage {
     private int nShields;
     private int nWeapons;
     private ArrayList<WeaponType> weapons;
+    private static int NOTUSED = -1;
     
     public String toString(){
         return "Shields: " +this.nShields + " , nWeapons: " + this.nWeapons;
@@ -24,19 +25,25 @@ public class Damage {
     Damage(int w, int s){
         this.nShields = s;
         this.nWeapons = w;
-        this.weapons = new ArrayList<WeaponType>();
+        this.weapons = null;
     }
     
     Damage(ArrayList<WeaponType> wl, int s){
         this.nShields = s;
-        this.nWeapons = wl.size();
-        this.weapons = new ArrayList<WeaponType>(wl);
+        this.nWeapons = NOTUSED;
+        this.weapons = wl;
     }
     
     Damage(Damage d){
-        this.nShields = d.nShields;
-        this.nWeapons = d.nWeapons;
-        this.weapons = new ArrayList<WeaponType>(d.weapons);
+        this.nShields = d.getNShields();
+        if(d.getWeapons() != null){
+            this.weapons = d.getWeapons();
+            this.nWeapons = NOTUSED;
+        }
+        else{
+            this.weapons = null;
+            this.nWeapons = d.getNWeapons();
+        }
         
     }
     
@@ -59,7 +66,7 @@ public class Damage {
     
     public Damage adjust(ArrayList<Weapon> w, ArrayList<ShieldBooster> s){
         
-        if (this.weapons.size() > 0){
+        if (this.weapons != null){
             // Vector to introduce the adjusted weapontypes
             ArrayList<WeaponType> newWeapons = new ArrayList<WeaponType>();
             // Copy of the old vector 
@@ -67,15 +74,17 @@ public class Damage {
 
             int newShields = min(s.size(),this.nShields);
 
-            for(WeaponType received : this.weapons){
+            for(WeaponType wType : this.weapons){
                 
-                if(arrayContainsType(old,received)  != -1){
-                    newWeapons.add(received);
-                    old.remove(received);
-                    
+                int pos = arrayContainsType(old,wType);
+                if(pos != -1){
+                    newWeapons.add(wType);
+                    old.remove(pos);
                 }
+                
             }
-            return new Damage(newWeapons,newShields);
+            Damage ret = new Damage(newWeapons,newShields);
+            return ret;
         }
         else{
             int newShields = min(s.size(), this.nShields);
@@ -89,11 +98,17 @@ public class Damage {
     public void discardWeapon(Weapon w){
         WeaponType t = w.getType();
         
-        if(this.weapons.contains(t))
-            this.weapons.remove(t);
-           
-        if(this.nWeapons > 0)
-                this.nWeapons -= 1;
+        if(this.weapons ==  null){
+            if(this.nWeapons > 0){
+                this.nWeapons -=1;
+            }
+        }
+        else{
+            if(this.weapons.contains(t)){
+                this.weapons.remove(t);
+            }
+        }
+        
             
     }
     
@@ -104,7 +119,14 @@ public class Damage {
     }
     
     public boolean hasNoEffect(){
-        return (this.nShields == 0)&& (this.nWeapons == 0) && (this.weapons.size() == 0);
+        boolean ret = false;
+        if(this.nWeapons == NOTUSED){
+            ret = this.weapons.size() == 0 && this.nShields == 0;
+        }
+        else{
+            ret = this.nShields == 0 && this.nWeapons == 0;
+        }
+        return ret;
     }
 
     public int getNShields() {

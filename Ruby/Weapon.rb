@@ -1,7 +1,7 @@
 #encoding:utf-8
 
-require_relative 'WeaponType.rb'
-
+require_relative 'WeaponType'
+require_relative 'WeaponToUI'
 module Deepspace
 
     class Weapon
@@ -24,17 +24,21 @@ module Deepspace
             ret = 1.0
             if @uses > 0
                 @uses = @uses - 1
-                ret = self.power()
+                ret = power()
             end
 
             ret
+        end
+
+        def getUIversion
+            WeaponToUI.new(self)
         end
 
         def to_s()
             "This weapon is:" + @name + ", type:" + @type + ", uses:" + @uses
         end
 
-        attr_reader :type, :uses
+        attr_reader :type, :uses ,:name
     end
 
 end

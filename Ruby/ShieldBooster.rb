@@ -1,5 +1,7 @@
 #encoding:utf-8
 
+require_relative 'ShieldToUI'
+
 module Deepspace
 
     class ShieldBooster
@@ -14,14 +16,6 @@ module Deepspace
             new(sb.name,sb.boost,sb.uses)
         end
 
-        def boost
-            @boost
-        end
-
-        def uses
-            @uses
-        end
-
         def useIt
             ret = 1.0
             if @uses > 0
@@ -32,9 +26,15 @@ module Deepspace
             ret
         end
 
+        def getUIversion
+            ShieldToUI.new(self)
+        end
+
         def to_s()
             "This Shield Booster is:" + @name + ", with boost:" + @boost + ", and uses:" + @uses
         end
+
+        attr_reader :boost, :uses, :name
         
     end
 

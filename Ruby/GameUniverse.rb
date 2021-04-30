@@ -6,6 +6,8 @@ require_relative 'SpaceStation'
 require_relative 'CombatResult'
 require_relative 'GameCharacter'
 require_relative 'ShotResult'
+require_relative 'GameUniverseToUI'
+
 
 
 module Deepspace
@@ -30,31 +32,51 @@ module Deepspace
         end
 
         def discardHangar
-            @currentStation.discardHangar
+            if state() == GameState::INIT or state() == GameState::AFTERCOMBAT
+                @currentStation.discardHangar
+            end
         end
 
         def discardShieldBooster(i)
-            @currentStation.discardShieldBooster(i)
+            if state() == GameState::INIT or state() == GameState::AFTERCOMBAT
+                @currentStation.discardShieldBooster(i)
+            end
         end
 
         def discardShieldBoosterInHangar(i)
-            @currentStation.discardShieldBoosterInHangar(i)
+            if state() == GameState::INIT or state() == GameState::AFTERCOMBAT
+                @currentStation.discardShieldBoosterInHangar(i)
+            end
         end
 
         def discardWeapon(i)
-            @currentStation.discardWeapon(i)
+            if state() == GameState::INIT or state() == GameState::AFTERCOMBAT
+                @currentStation.discardWeapon(i)
+            end
         end
 
         def discardWeaponInHangar(i)
-            @currentStation.discardWeaponInHangar(i)
+            if state() == GameState::INIT or state() == GameState::AFTERCOMBAT
+                @currentStation.discardWeaponInHangar(i)
+            end
+        end
+
+        def mountWeapon(i)
+            if state() == GameState::INIT or state() == GameState::AFTERCOMBAT
+                @currentStation.mountWeapon(i)
+            end
+        end
+
+        def mountShieldBooster(i)
+            if state() == GameState::INIT or state() == GameState::AFTERCOMBAT
+                @currentStation.mountShieldBooster(i)
+            end
         end
 
         def init(names)
-            # Next practise
-            state = gameState.getState
 
-            if state == GameState::CANNOTPLAY
-                dealer = CardDealer.getInstance
+            if state() == GameState::CANNOTPLAY
+                dealer = CardDealer.instance 
 
                 names.each do |n|
                     supplies = dealer.nextSuppliesPackage
@@ -71,18 +93,20 @@ module Deepspace
                 @currentStation = @spaceStations[@currentStationIndex]
                 @currentEnemy = dealer.nextEnemy
                 @gameState.next(@turns,@spaceStations.length)
+
             end
         end
 
         def nextTurn
-            state = @gameState
-            ret = False
+            state = state()
+            ret = false
             if state == GameState::AFTERCOMBAT
                 if @currentStation.validState
                     @currentStationIndex = (@currentStationIndex+1) % @spaceStations.length
                     @turns += 1
                     @currentStation = @spaceStations[@currentStationIndex]
-                    dealer = CardDealer.getInstance
+                    @currentStation.cleanUpMountedItems
+                    dealer = CardDealer.instance 
                     @currentEnemy = dealer.nextEnemy
                     @gameState.next(@turns,@spaceStations.length)
                     ret = true
@@ -93,7 +117,7 @@ module Deepspace
         end
 
         def combat
-            if @gameState == GameState::BEFORECOMBAT or @gameState == GameState::INIT
+            if state() == GameState::BEFORECOMBAT or state() == GameState::INIT
                 ret = combatGo(@currentStation,@currentEnemy)
             else
                 ret =CombatResult::NOCOMBAT
@@ -103,50 +127,57 @@ module Deepspace
 
         def combatGo(station,enemy)
             ch = @dice.firstShot
-                if @dice.firstShot == GameCharacter::ENEMYSTARSHIP
-                    fire = enemy.fire
-                    result = station.receiveShot(fire)
-                    if result == ShotResult::RESIST
-                        fire = station.fire()
-                        result = station.receiveShot(fire)
-                        enemyWins = result == ShotResult::RESIST
-                    else
-                        enemyWins = true
-                    end
-                
-                else
+            puts "Va a disparar #{ch}"
+            if ch == GameCharacter::ENEMYSTARSHIP
+                fire = enemy.fire
+                result = station.receiveShot(fire)
+                if result == ShotResult::RESIST
+                    puts "La estación ha aguantado"
                     fire = station.fire()
-                    result = enemy.receiveShot(fire)
+                    result = station.receiveShot(fire)
                     enemyWins = result == ShotResult::RESIST
-                end
-
-                if enemyWins
-                    s = station.getSpeed
-                    moves = @dice.spaceStationMoves(s)
-                    if !moves
-                        damage = enemy.damage
-                        station.setPendingDamage(damage)
-                        combatResult = CombatResult::ENEMYWINS
-                    else
-                        station.move
-                        combatResult = CombatResult::STATIONWINS
-                    end
                 else
-                    aLoot = enemy.loot 
-                    station.setLoot(aLoot)
-                    combatResult = CombatResult::STATIONWINS
+                    puts "La estación se ha derrumbado"
+                    enemyWins = true
                 end
+            
+            else
+                fire = station.fire
+                result = enemy.receiveShot(fire)
+                puts "Disparó la nave amiga y el resultado fue #{result}"
+                enemyWins = result == ShotResult::RESIST
+            end
 
-                @gameState.next(@turns,@spaceStations.length)
-                combatResult
+            if enemyWins
+                puts "Ha ganado el enemigo"
+                s = station.speed
+                moves = @dice.spaceStationMoves(s)
+                if !moves
+                    puts "No te has movido"
+                    damage = enemy.damage
+                    station.setPendingDamage(damage)
+                    combatResult = CombatResult::ENEMYWINS
+                else
+                    puts "Te moviste y te escapas del daño"
+                    station.move
+                    combatResult = CombatResult::STATIONESCAPES
+                end
+            else
+                puts "Has ganado, vas a poner el loot"
+                aLoot = enemy.loot 
+                station.setLoot(aLoot)
+                combatResult = CombatResult::STATIONWINS
+            end
+            @gameState.next(@turns,@spaceStations.length)
+            combatResult
         end
         
-        def getState
-            @gameState
+        def state
+            @gameState.state
         end
 
         def getUIversion
-            GameUniverseToUI.new(self)
+            GameUniverseToUI.new(@currentStation,@currentEnemy)
         end
 
     end

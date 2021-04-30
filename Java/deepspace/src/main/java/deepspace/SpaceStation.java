@@ -44,9 +44,9 @@ public class SpaceStation {
     }
     
     SpaceStation(String n, SuppliesPackage supplies){
-        this.name = name;
+        this.name = n;
         this.ammoPower = supplies.getAmmoPower();
-        this.fuelUnits = supplies.getFuelUnits();
+        assignFuelValue(supplies.getFuelUnits());
         this.shieldPower = supplies.getShieldPower();
         this.weapons = new ArrayList<Weapon>();
         this.shieldBoosters = new ArrayList<ShieldBooster>();
@@ -100,14 +100,17 @@ public class SpaceStation {
     }
     
     public void cleanUpMountedItems(){
-        for(Weapon w: this.weapons){
-            if(w.getUses() == 0){
-                this.weapons.remove(w);
+        for(int i = 0; i < this.weapons.size(); i++){
+            if(this.weapons.get(i).getUses() == 0){
+                this.weapons.remove(i);
+                i--;
             }
+                
         }
-        for(ShieldBooster s: this.shieldBoosters){
-            if(s.getUses() == 0){
-                this.shieldBoosters.remove(s);
+        for(int i =0; i < this.shieldBoosters.size(); i++){
+            if(this.shieldBoosters.get(i).getUses() == 0){
+                this.shieldBoosters.remove(i);
+                i--;
             }
         }
     }
@@ -157,6 +160,15 @@ public class SpaceStation {
         return factor*this.ammoPower;
     }
     
+    public float protection(){
+        float factor = 1.0f;
+        for(ShieldBooster s: this.shieldBoosters){
+            factor *= s.useIt();
+        }
+        return factor*this.shieldPower;
+    }
+    
+    
     public void mountShieldBooster(int i){
         ShieldBooster b = this.hangar.removeShieldBooster(i);
         if(b != null){
@@ -175,14 +187,7 @@ public class SpaceStation {
         this.fuelUnits = Float.max(this.fuelUnits - this.getSpeed(),0f);
     }
     
-    public float protection(){
-        float factor = 1.0f;
-        for(ShieldBooster s: this.shieldBoosters){
-            factor *= s.useIt();
-        }
-        return factor*this.shieldPower;
-    }
-    
+
     public void receiveHangar(Hangar h){
         if(this.hangar == null){
             this.hangar = h;
@@ -256,11 +261,21 @@ public class SpaceStation {
     }
     
     public void setPendingDamage(Damage d){
-        this.pendingDamage = d.adjust(this.weapons, this.shieldBoosters);
+        Damage adjusted = d.adjust(this.weapons,this.shieldBoosters);
+        if(adjusted.getNWeapons() == 0 && adjusted.getNShields() == 0){
+            adjusted = null;
+        }
+        this.pendingDamage = adjusted;
     }
     
     public boolean validState(){
-        return this.pendingDamage.hasNoEffect() || this.pendingDamage == null;
+        boolean ret = true;
+        if(this.pendingDamage != null){
+            if(!this.pendingDamage.hasNoEffect()){
+                ret = false;
+            }
+        }
+        return ret;
     }
     
     

@@ -16,7 +16,7 @@ module Deepspace
         end
 
         def self.newCopy(e)
-            self.new(e.name,e.ammoPower,e.shieldPower,e.loot,e.damage)
+            new(e.name,e.ammoPower,e.shieldPower,e.loot,e.damage)
         end
 
         def getUIversion
@@ -32,9 +32,9 @@ module Deepspace
         end
 
         def receiveShot(shot)
-           ret = ShotResult.DONOTRESIST
-           if self.protection >= shot
-                ret = ShotResult.RESIST
+           ret = ShotResult::DONOTRESIST
+           if protection() >= shot
+                ret = ShotResult::RESIST
            end
            ret
         end

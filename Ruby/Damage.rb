@@ -7,6 +7,7 @@ module Deepspace
 
     class Damage
 
+        @@NOTUSED = -1
 
         def initialize(w,s,weapons)
             @nShields = s
@@ -15,11 +16,11 @@ module Deepspace
         end
         
         def self.newNumericWeapons(w,s)
-            new(w,s,Array.new)
+            new(w,s,nil)
         end
 
-        def self.newSpecificWeapons(s,weapons)
-            new(weapons.length,s,weapons)
+        def self.newSpecificWeapons(weapons,s)
+            new(@@NOTUSED,s,weapons)
 
         end
 
@@ -43,31 +44,40 @@ module Deepspace
         end
 
         def adjust(w,s)
-            nShields = [@nShields,s].min
-            if @weapons.length == 0:
-                ret = self.newNumericWeapons([@nWeapons,w.length].min,nShields)
+            puts "Habrá que ajustar, tenemos que las weapons son #{@nWeapons}"
+            newShields = [@nShields,s].min
+            if @nWeapons != @@NOTUSED 
+                ret = self.class.newNumericWeapons([@nWeapons,w.length].min,newShields)
             else
-                copy = w.clone()
+                old = w.clone()
                 newWeapons = Array.new
-                weapons.each do |wType|
-                    i = arrayContainsType(copy,wType)
+                @weapons.each do |wType|
+                    i = arrayContainsType(old,wType)
                     if i != -1
                         newWeapons << wType
-                        copy.delete(wType)
+                        old.delete_at(i)
+                        i -= 1
                     end
                 end 
 
-                ret = self.newSpecificWeapons(nShields, newWeapons )
+                ret = self.class.newSpecificWeapons(newWeapons,newShields )
             end
+            # Return empty damage if adjust is empty
+            if ret.hasNoEffect
+                ret = nil
+            end
+            ret
         end
 
         def discardWeapon(w)
-            if @weapons.include? w.getType
-                @weapons.delete(w.getType)
-            end 
-
-            if @nWeapons > 0
-                @nWeapons = @nWeapons -1
+            if @nWeapons == @@NOTUSED
+                if @weapons.include? w.type
+                    @weapons.delete(w.type)
+                end 
+            else
+                if @nWeapons > 0
+                    @nWeapons = @nWeapons -1
+                end
             end
             
         end
@@ -79,7 +89,13 @@ module Deepspace
         end
 
         def hasNoEffect
-            (@nShields == 0) and (@nWeapons == 0) and (@weapons.length == 0)
+            ret = false
+            if @nWeapons == @@NOTUSED
+                ret = (@weapons.length == 0) and (@nShields == 0)
+            else
+                ret = (@nShields == 0) and (@nWeapons == 0)
+            end
+            ret
         end
 
 
