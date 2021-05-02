@@ -26,20 +26,23 @@ module Deepspace
         end
 
         def cleanUpMountedItems
-            for i in 0..@weapons.length
-                w = @weapons[i]
-                if w.uses == 0
-                    @weapons.delete(w)
-                    i = i-1
+            auxWeapons = Array.new
+            auxShields = Array.new
+
+            @weapons.each do |w|
+                if w.uses > 0
+                    auxWeapons << w
                 end
             end
 
-            for i in 0..@
             @shieldBoosters.each do |s|
-                if s.uses == 0
-                    @shieldBoosters.delete(s)
+                if s.uses > 0
+                    auxShields << s
                 end
             end
+
+            @weapons = auxWeapons
+            @shieldBoosters = auxShields
         end
 
 
@@ -60,7 +63,7 @@ module Deepspace
         end
 
         def discardShieldBooster(i)
-            if i >= 0 and i < @shieldBoosters.length
+            if (i >= 0 && i < @shieldBoosters.length)
                 s = @shieldBoosters.delete_at(i)
 
                 if @pendingDamage != nil
@@ -78,7 +81,7 @@ module Deepspace
         end
 
         def discardWeapon(i)
-            if i >= 0 and i < @weapons.length
+            if (i >= 0 && i < @weapons.length)
                 w = @weapons.delete_at(i)
 
                 if @pendingDamage != nil

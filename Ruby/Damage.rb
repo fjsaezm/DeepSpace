@@ -28,6 +28,10 @@ module Deepspace
             new(d.nWeapons,d.nShields,d.weapons)
         end
 
+        def to_s
+            "NWeapons:#{@nWeapons} \n NShields:#{@nShields} \n Weapons:#{@weapons}"
+        end
+
         def getUIversion
             DamageToUI.new(self)
         end
@@ -46,6 +50,7 @@ module Deepspace
         def adjust(w,s)
             puts "Habrá que ajustar, tenemos que las weapons son #{@nWeapons}"
             newShields = [@nShields,s].min
+            print("We have #{@nShields} and #{s} so the min is #{newShields}")
             if @nWeapons != @@NOTUSED 
                 ret = self.class.newNumericWeapons([@nWeapons,w.length].min,newShields)
                 print("Devolveremos tipo numerico con #{ret.nWeapons} armas y #{ret.nShields} escudos")
@@ -61,10 +66,13 @@ module Deepspace
                     end
                 end 
 
-                ret = self.class.newSpecificWeapons(newWeapons,newShields )
+                ret = self.class.newSpecificWeapons(newWeapons,newShields)
             end
+            puts ret.inspect
             # Return empty damage if adjust is empty
             if ret.hasNoEffect
+                puts "Ojo porque ret has no effect"
+                puts ret.inspect
                 ret = nil
             end
             ret
@@ -90,12 +98,12 @@ module Deepspace
         end
 
         def hasNoEffect
-            ret = false
             if @nWeapons == @@NOTUSED
-                ret = (@weapons.length == 0) and (@nShields == 0)
+                ret = (@weapons.length == 0 && @nShields == 0)
             else
-                ret = (@nShields == 0) and (@nWeapons == 0)
+                ret = (@nShields == 0 && @nWeapons == 0)
             end
+            puts "La verdad es que tiene el efecto: #{ret}"
             ret
         end
 

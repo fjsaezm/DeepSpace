@@ -28,7 +28,7 @@ module Deepspace
         end
 
         def haveAWinner
-            @currentStation.nMedals == @@WIN
+            @currentStation.nMedals >= @@WIN
         end
 
         def discardHangar
@@ -135,7 +135,7 @@ module Deepspace
                     
                     fire = station.fire()
                     puts "La estación ha aguantado y ahora dispara con #{fire}"
-                    result = station.receiveShot(fire)
+                    result = enemy.receiveShot(fire)
                     enemyWins = result == ShotResult::RESIST
                 else
                     puts "La estación se ha derrumbado"
