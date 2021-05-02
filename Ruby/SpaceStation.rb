@@ -26,12 +26,15 @@ module Deepspace
         end
 
         def cleanUpMountedItems
-            @weapons.each do |w|
+            for i in 0..@weapons.length
+                w = @weapons[i]
                 if w.uses == 0
                     @weapons.delete(w)
+                    i = i-1
                 end
             end
 
+            for i in 0..@
             @shieldBoosters.each do |s|
                 if s.uses == 0
                     @shieldBoosters.delete(s)
@@ -52,7 +55,7 @@ module Deepspace
             end
         end
 
-        def discardHangar(i)
+        def discardHangar
             @hangar = nil
         end
 
@@ -70,7 +73,7 @@ module Deepspace
 
         def discardShieldBoosterInHangar(i)
             if @hangar != nil
-                @hangar.discardShieldBooster(i)
+                @hangar.removeShieldBooster(i)
             end
         end
 
@@ -87,7 +90,7 @@ module Deepspace
 
         def discardWeaponInHangar(i)
             if @hangar != nil
-                @hangar.discardWeapon(i)
+                @hangar.removeWeapon(i)
             end
         end
 
@@ -159,7 +162,7 @@ module Deepspace
         def receiveShot(shot)
             myProtection = protection()
             ret = ShotResult::DONOTRESIST
-
+            print("Me disparan con #{shot} y me protejo con #{myProtection}")
             if myProtection >= shot
                 @shieldPower = [@shieldPower -@@SHIELDLOSSPERUNITSHOT*shot,0 ].max
                 ret = ShotResult::RESIST
@@ -205,7 +208,7 @@ module Deepspace
             dealer = CardDealer.instance
 
             if loot.nHangars > 0
-                puts "Mira como recivo un hangar"
+                puts "Mira como recibo un hangar"
                 h = dealer.nextHangar
                 puts h.inspect
                 receiveHangar(h)

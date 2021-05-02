@@ -48,6 +48,7 @@ module Deepspace
             newShields = [@nShields,s].min
             if @nWeapons != @@NOTUSED 
                 ret = self.class.newNumericWeapons([@nWeapons,w.length].min,newShields)
+                print("Devolveremos tipo numerico con #{ret.nWeapons} armas y #{ret.nShields} escudos")
             else
                 old = w.clone()
                 newWeapons = Array.new

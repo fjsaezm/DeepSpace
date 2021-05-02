@@ -132,8 +132,9 @@ module Deepspace
                 fire = enemy.fire
                 result = station.receiveShot(fire)
                 if result == ShotResult::RESIST
-                    puts "La estación ha aguantado"
+                    
                     fire = station.fire()
+                    puts "La estación ha aguantado y ahora dispara con #{fire}"
                     result = station.receiveShot(fire)
                     enemyWins = result == ShotResult::RESIST
                 else
