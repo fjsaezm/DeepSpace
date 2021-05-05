@@ -27,6 +27,19 @@ module Deepspace
             
         end
 
+        def to_s
+            out = "CurrentStationIndex = #{@currentStationIndex}\n"
+            out += "Turns = #{@turns}\n"
+            out += "GameState = #{state()}\n"
+            out += " Current Enemy: \n #{@currentEnemy} \n"
+            out += "Dice= #{@dice}\n"
+            out += "Space Stations: \n"
+            @spaceStations.each do |sp|
+                out += " #{sp}\n"
+            end
+            out
+        end
+
         def haveAWinner
             @currentStation.nMedals >= @@WIN
         end
@@ -127,44 +140,44 @@ module Deepspace
 
         def combatGo(station,enemy)
             ch = @dice.firstShot
-            puts "Va a disparar #{ch}"
+            #puts "Va a disparar #{ch}"
             if ch == GameCharacter::ENEMYSTARSHIP
                 fire = enemy.fire
                 result = station.receiveShot(fire)
                 if result == ShotResult::RESIST
                     
                     fire = station.fire()
-                    puts "La estación ha aguantado y ahora dispara con #{fire}"
+                    #puts "La estación ha aguantado y ahora dispara con #{fire}"
                     result = enemy.receiveShot(fire)
                     enemyWins = result == ShotResult::RESIST
                 else
-                    puts "La estación se ha derrumbado"
+                    #puts "La estación se ha derrumbado"
                     enemyWins = true
                 end
             
             else
                 fire = station.fire
                 result = enemy.receiveShot(fire)
-                puts "Disparó la nave amiga y el resultado fue #{result}"
+                #puts "Disparó la nave amiga y el resultado fue #{result}"
                 enemyWins = result == ShotResult::RESIST
             end
 
             if enemyWins
-                puts "Ha ganado el enemigo"
+                #puts "Ha ganado el enemigo"
                 s = station.speed
                 moves = @dice.spaceStationMoves(s)
                 if !moves
-                    puts "No te has movido"
+                    #puts "No te has movido"
                     damage = enemy.damage
                     station.setPendingDamage(damage)
                     combatResult = CombatResult::ENEMYWINS
                 else
-                    puts "Te moviste y te escapas del daño"
+                    #puts "Te moviste y te escapas del daño"
                     station.move
                     combatResult = CombatResult::STATIONESCAPES
                 end
             else
-                puts "Has ganado, vas a poner el loot"
+                #puts "Has ganado, vas a poner el loot"
                 aLoot = enemy.loot 
                 station.setLoot(aLoot)
                 combatResult = CombatResult::STATIONWINS

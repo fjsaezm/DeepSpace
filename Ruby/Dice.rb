@@ -19,8 +19,8 @@ module Deepspace
             @generator = Random.new
         end
 
-        def to_s()
-            "This Dice has: @NHANGARSPROB =" + @NHANGARSPROB + ", NSHIELDSPROB=" + @NSHIELDSPROB + ", NWEAPONSPROB=" + @NWEAPONSPROB + ", FIRSTSHOTPROB=" + @FIRSTSHOTPROB
+        def to_s
+            "This Dice has: NHANGARSPROB = #{@NHANGARSPROB}, NSHIELDSPROB = #{@NSHIELDSPROB}, NWEAPONSPROB = #{@NWEAPONSPROB}, FIRSTSHOTPROB = #{@FIRSTSHOTPROB}"
         end
         
         def initWithNHangars()

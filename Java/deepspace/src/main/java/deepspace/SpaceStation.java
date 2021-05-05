@@ -29,8 +29,41 @@ public class SpaceStation {
     private Damage pendingDamage; // this will be 0 or 1
     
     public String toString(){
-        return String.format("This SpaceStation has (ammoPower,fuelUnits,name,nMedals,shieldPower)=(%f,%f,%s,%d,%f)",ammoPower,fuelUnits,name,nMedals,shieldPower) +
-                "and also:" + hangar.toString() + " and its pending damage is " + pendingDamage.toString();
+        String ret = String.format("This SpaceStation has (ammoPower,fuelUnits,name,nMedals,shieldPower)=(%f,%f,%s,%d,%f)",ammoPower,fuelUnits,name,nMedals,shieldPower);
+        
+        String weap = "\n+ WEAPONS MOUNTED: \n";
+        if(weapons == null || weapons.isEmpty())
+            weap += " Ninguna\n";
+        else{
+            for(Weapon w : weapons){
+                weap += w.toString();
+            }
+        }
+        
+        String shB = "\n+ SHIELDBOOSTERS MOUNTED: \n";
+        if(shieldBoosters == null || shieldBoosters.isEmpty())
+            shB += " Ninguno\n";
+        else{
+            for(ShieldBooster sB : shieldBoosters){
+                shB += sB.toString();
+            }
+        }
+        
+        String han = "\n* HANGAR: \n";
+        if(hangar == null)
+            han += " Ninguno\n";
+        else
+            han += hangar.toString();
+        
+         
+        String pDam = "\n* PENDINGDAMAGE: \n";
+        if(pendingDamage == null)
+            pDam += " Ninguno\n";
+        else
+            pDam += pendingDamage.toString() + "\n";
+                
+        return ret + weap + shB + han + pDam;
+                
     }
     
     private void assignFuelValue(float f){
@@ -217,7 +250,7 @@ public class SpaceStation {
     public void receiveSupplies(SuppliesPackage s){
         this.ammoPower += s.getAmmoPower();
         this.shieldPower += s.getShieldPower();
-        this.fuelUnits += s.getFuelUnits();
+        assignFuelValue(this.fuelUnits + s.getFuelUnits());
         
     }
     

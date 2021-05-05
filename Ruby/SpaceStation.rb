@@ -10,7 +10,7 @@ module Deepspace
     class SpaceStation
 
         @@SHIELDLOSSPERUNITSHOT = 0.1
-        @@MAXFUEL = 100
+        @@MAXFUEL = 100.0
         
 
         def initialize(n,supplies)
@@ -24,6 +24,42 @@ module Deepspace
             @hangar = nil
             @pendingDamage = nil
         end
+
+        def to_s
+            namE = "+ NAME: #{@name}\n"
+            aP = "+ AMMOPOWER: #{@ammoPower} "
+            fU = "+ FUELUNITS: #{@fuelUnits} "
+            sP = "+ SHIELDPOWER: #{@shieldPower}\n"
+            nMed = "+ NMEDALS: #{@nMedals}\n"
+            
+            pDam = "+ PENDING DAMAGE: Ninguno \n"
+            if pendingDamage != nil
+              pDam = "+ PENDING DAMAGE: \n#{@pendingDamage.to_s}"
+            end
+            
+            wP = "+ WEAPONS MOUNTED: Ninguno \n"
+            if !weapons.empty?
+              wP = "\n+ WEAPONS MOUNTED: \n"
+              @weapons.each { |w|
+                wP += "#{w.to_s}\n"
+              }
+            end
+            
+            sB = "+ SHIELDBOOSTERS MOUNTED: Ninguno \n"
+            if !shieldBoosters.empty?
+              sB = "\n+ SHIELDBOOSTERS MOUNTED: \n"
+              @shieldBoosters.each { |shieldB|
+                sB += "#{shieldB.to_s}\n"
+              }
+            end
+            
+            hG = "+ HANGAR: Ninguno \n"
+            if hangar != nil
+              hG = "\n+ HANGAR: \n#{@hangar.to_s}\n"
+            end
+            
+            return namE + aP + fU + nMed + sP + pDam + wP + sB + hG
+          end
 
         def cleanUpMountedItems
             auxWeapons = Array.new
@@ -165,7 +201,7 @@ module Deepspace
         def receiveShot(shot)
             myProtection = protection()
             ret = ShotResult::DONOTRESIST
-            print("Me disparan con #{shot} y me protejo con #{myProtection}")
+            #puts "Me disparan con #{shot} y me protejo con #{myProtection}"
             if myProtection >= shot
                 @shieldPower = [@shieldPower -@@SHIELDLOSSPERUNITSHOT*shot,0 ].max
                 ret = ShotResult::RESIST
@@ -178,7 +214,7 @@ module Deepspace
 
         def receiveSupplies(s)
             @ammoPower += s.ammoPower
-            @fuelUnits += s.fuelUnits
+            assignFuelValue(@fuelUnits + s.fuelUnits)
             @shieldPower += s.shieldPower
 
         end
@@ -202,7 +238,7 @@ module Deepspace
         end
 
         def setPendingDamage(d)
-            adj = d.adjust(@weapons,@shieldBoosters.length)
+            adj = d.adjust(@weapons,@shieldBoosters)
             @pendingDamage = adj
         end
 
@@ -211,9 +247,9 @@ module Deepspace
             dealer = CardDealer.instance
 
             if loot.nHangars > 0
-                puts "Mira como recibo un hangar"
+                #puts "Mira como recibo un hangar"
                 h = dealer.nextHangar
-                puts h.inspect
+                #puts h.inspect
                 receiveHangar(h)
             end
 

@@ -31,7 +31,7 @@ module Deepspace
         end
 
         def to_s()
-            "This Shield Booster is:" + @name + ", with boost:" + @boost + ", and uses:" + @uses
+            "This Shield Booster is: #{@name} and boosts #{@boost} for #{@uses} uses"
         end
 
         attr_reader :boost, :uses, :name

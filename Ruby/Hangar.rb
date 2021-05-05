@@ -12,6 +12,26 @@ module Deepspace
             @shieldBoosters = Array.new
         end
 
+        def to_s
+            out = "Hangar. MaxElements = #{@maxElements}.\n "
+            wP = "+ Weapons in Hangar = Ninguna"
+            if @weapons.size > 0
+                wP = "\n+ WEAPONS in Hangar = \n"
+                @weapons.each { |w|
+                    wP += "-#{w.to_s}\n"
+                }
+            end
+
+            sB = " SHIELDBOOSTERS in HANGAR: Ninguno \n"
+            if !shieldBoosters.empty?
+              sB = "\n+ SHIELDBOOSTERS in HANGAR : \n"
+              @shieldBoosters.each { |shieldB|
+                sB += "-#{shieldB.to_s}\n"
+              }
+            end
+
+            out + wP + sB
+        end
         def self.newCopy(h)
             ret = new(h.maxElements)
             for i in (0...h.shieldBoosters.size)

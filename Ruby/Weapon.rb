@@ -34,8 +34,8 @@ module Deepspace
             WeaponToUI.new(self)
         end
 
-        def to_s()
-            "This weapon is:" + @name + ", type:" + @type + ", uses:" + @uses
+        def to_s
+            "This weapon is: #{@name}, type is #{@type} and uses #{@uses}"
         end
 
         attr_reader :type, :uses ,:name

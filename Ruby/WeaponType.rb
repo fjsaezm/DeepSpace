@@ -6,9 +6,9 @@ module Deepspace
 
         class Type
 
-            @@LASERPOWER = 2.0
-            @@MISSILEPOWER = 3.0
-            @@PLASMAPOWER = 4.0
+            CONSTLASERPOWER = 2.0
+            CONSTMISSILEPOWER = 3.0
+            CONSTPLASMAPOWER = 4.0
 
             def initialize(_power)
                 @power = _power
@@ -19,13 +19,14 @@ module Deepspace
             end
 
             def to_s
-                if @power == @@LASERPOWER
-                  "LASER"
-                elsif @power == @@PLASMAPOWER
-                  "PLASMA"
-                elsif @power == @@MISSILEPOWER
-                  "MISSILE"
+                if @power == CONSTLASERPOWER
+                  ret = "LASER"
+                elsif @power == CONSTPLASMAPOWER
+                  ret ="PLASMA"
+                elsif @power == CONSTMISSILEPOWER
+                  ret ="MISSILE"
                 end
+                ret 
             end
         end
 

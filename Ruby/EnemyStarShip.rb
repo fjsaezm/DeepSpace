@@ -15,6 +15,10 @@ module Deepspace
             @damage = d 
         end
 
+        def to_s
+            "+Enemy NAME: #{@name}.\n \tAmmoPower = #{@ammoPower}.\n \tShieldPower = #{@shieldPower}.\n \tLoot: #{@loot}.\n \t Damage: #{@damage} "
+        end
+
         def self.newCopy(e)
             new(e.name,e.ammoPower,e.shieldPower,e.loot,e.damage)
         end

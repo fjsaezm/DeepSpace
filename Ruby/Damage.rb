@@ -7,7 +7,7 @@ module Deepspace
 
     class Damage
 
-        @@NOTUSED = -1
+        NOTUSED = -1
 
         def initialize(w,s,weapons)
             @nShields = s
@@ -20,7 +20,7 @@ module Deepspace
         end
 
         def self.newSpecificWeapons(weapons,s)
-            new(@@NOTUSED,s,weapons)
+            new(NOTUSED,s,weapons)
 
         end
 
@@ -29,7 +29,21 @@ module Deepspace
         end
 
         def to_s
-            "NWeapons:#{@nWeapons} \n NShields:#{@nShields} \n Weapons:#{@weapons}"
+            if @nWeapons != NOTUSED
+                ret = "Numeric Damage: NWeapons = #{@nWeapons}, NShields = #{@nShields}"
+            else
+                ret = "Specific Damage.\n \t NShields = #{@nShields}. "
+                wP = "\n\t WEAPONS = NONE"
+                if !weapons.empty?
+                    wP = "\n\t WEAPONS : "
+                    @weapons.each { |w|
+                        wP += "#{w.to_s} "
+                    }
+                end
+                ret = ret + wP
+            end
+            ret 
+            
         end
 
         def getUIversion
@@ -48,12 +62,12 @@ module Deepspace
         end
 
         def adjust(w,s)
-            puts "Habrá que ajustar, tenemos que las weapons son #{@nWeapons}"
-            newShields = [@nShields,s].min
-            print("We have #{@nShields} and #{s} so the min is #{newShields}")
-            if @nWeapons != @@NOTUSED 
+            #puts "Habrá que ajustar, tenemos que las weapons son #{@nWeapons}"
+            newShields = [@nShields,s.size].min
+            #puts "We have #{@nShields} and #{s} so the min is #{newShields}"
+            if @nWeapons != NOTUSED 
                 ret = self.class.newNumericWeapons([@nWeapons,w.length].min,newShields)
-                print("Devolveremos tipo numerico con #{ret.nWeapons} armas y #{ret.nShields} escudos")
+                #puts"Devolveremos tipo numerico con #{ret.nWeapons} armas y #{ret.nShields} escudos"
             else
                 old = w.clone()
                 newWeapons = Array.new
@@ -68,21 +82,21 @@ module Deepspace
 
                 ret = self.class.newSpecificWeapons(newWeapons,newShields)
             end
-            puts ret.inspect
+            #puts ret.inspect
             # Return empty damage if adjust is empty
             if ret.hasNoEffect
-                puts "Ojo porque ret has no effect"
-                puts ret.inspect
+                #puts "Ojo porque ret has no effect"
+                #puts ret.inspect
                 ret = nil
             end
             ret
         end
 
         def discardWeapon(w)
-            if @nWeapons == @@NOTUSED
+            if @nWeapons == NOTUSED
                 if @weapons.include? w.type
-                    @weapons.delete(w.type)
-                end 
+                    @weapons.delete_at( @weapons.index(w.type) || @weapons.lenght)
+                end
             else
                 if @nWeapons > 0
                     @nWeapons = @nWeapons -1
@@ -98,12 +112,12 @@ module Deepspace
         end
 
         def hasNoEffect
-            if @nWeapons == @@NOTUSED
+            if @nWeapons == NOTUSED
                 ret = (@weapons.length == 0 && @nShields == 0)
             else
                 ret = (@nShields == 0 && @nWeapons == 0)
             end
-            puts "La verdad es que tiene el efecto: #{ret}"
+            #puts "La verdad es que tiene el efecto: #{ret}"
             ret
         end
 
