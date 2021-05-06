@@ -5,17 +5,12 @@ require_relative 'GameCharacter.rb'
 module Deepspace
 
     class Dice
-
-        NHANGARSPROBCONST = 0.25
-        NSHIELDSPROBCONST = 0.25
-        NWEAPONSPROBCONST = 0.33
-        FIRSTSHOTPROBCONST = 0.5
         
         def initialize()
-            @NHANGARSPROB = NHANGARSPROBCONST
-            @NSHIELDSPROB = NSHIELDSPROBCONST
-            @NWEAPONSPROB = NWEAPONSPROBCONST
-            @FIRSTSHOTPROB = FIRSTSHOTPROBCONST
+            @NHANGARSPROB = 0.25
+            @NSHIELDSPROB = 0.25
+            @NWEAPONSPROB = 0.33
+            @FIRSTSHOTPROB = 0.5
             @generator = Random.new
         end
 
