@@ -24,6 +24,9 @@ public class GameUniverse {
     private SpaceStation currentStation;
     private GameStateController gameState;
     
+    
+    private boolean haveSpaceCity;
+    
     public String toString(){
         return "In this universe, we have: turns=" + turns + ", currentStationIndex="+currentStationIndex + ", the dice is:" + dice.toString() + 
                 ", the enemy is:" + currentEnemy.toString() + ", the current spaceStation is:" + currentStation.toString() ;
@@ -36,6 +39,38 @@ public class GameUniverse {
         this.turns = 0;
     }
     
+    private void createSpaceCity(){
+        if(!this.haveSpaceCity){
+            int pos = this.spaceStations.indexOf(this.currentStation);
+            ArrayList<SpaceStation> col = new ArrayList();
+            for(int i = 0; i < spaceStations.size(); i++){
+                if( i != pos){
+                    col.add(spaceStations.get(i));
+                }
+            }
+            // Update reference
+            this.currentStation = new SpaceCity(currentStation,col);
+            // Update reference in vector
+            this.spaceStations.add(pos,this.currentStation);
+        }
+    }
+    
+    private void makeStationEfficient(){
+        // Assume that true is turning into efficient and false is betapower
+        int pos = this.spaceStations.indexOf(this.currentStation);
+        // Assume that is 80% of converting into PowerEfficient and 20% of converting in betapower
+        if(dice.extraEfficiency()){
+            
+            // Update reference
+            this.currentStation = new PowerEfficientSpaceStation(currentStation);
+            
+        }
+        else{
+            this.currentStation = new BetaPowerEfficientSpaceStation(currentStation);
+        }
+        // Update reference in vector
+        this.spaceStations.add(pos,this.currentStation);
+    }
     
     
     CombatResult combat(SpaceStation station, EnemyStarShip enemy){
@@ -59,7 +94,7 @@ public class GameUniverse {
         // Player first
         else{
             float fire = station.fire();
-            ShotResult result = enemy.receiveshot(fire);
+            ShotResult result = enemy.receiveShot(fire);
             enemyWins = (result == ShotResult.RESIST);
             
         }
@@ -81,7 +116,13 @@ public class GameUniverse {
         }
         else{
             Loot aLoot = enemy.getLoot();
-            station.setLoot(aLoot);
+            Transformation t = station.setLoot(aLoot);
+            if(t == Transformation.GETEFFICIENT){
+                makeStationEfficient();
+            }
+            else if(t == Transformation.SPACECITY){
+                createSpaceCity();
+            }
             combatResult = CombatResult.STATIONWINS;
         }
         

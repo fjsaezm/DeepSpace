@@ -9,7 +9,7 @@ package deepspace;
  *
  * @author fjaviersaezm
  */
-class ShieldBooster {
+class ShieldBooster implements CombatElement {
     private String name;
     private float boost;
     private int uses;
@@ -23,19 +23,19 @@ class ShieldBooster {
     }
     
     ShieldBooster(ShieldBooster s) {
-        this.name = s.name;
-        this.boost = s.boost;
-        this.uses = s.uses;
+        this(s.name,s.boost,s.uses);
     }
 
     public float getBoost() {
         return boost;
     }
 
+    @Override
     public int getUses() {
         return uses;
     }
     
+    @Override
     public float useIt(){
         float ret = 1.0f;
         

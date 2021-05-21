@@ -7,9 +7,13 @@ package deepspace;
 
 /**
  *
- * @author fjaviersaezm
- * This enum represents all the possible outcomes in a combat 
+ * @author fjsae
  */
-public enum CombatResult {
-    ENEMYWINS,NOCOMBAT,STATIONESCAPES,STATIONWINS,STATIONWINSANDCONVERTS
+public interface SpaceFighter {
+    
+    public float fire();
+    
+    public float protection();
+    
+    public ShotResult receiveShot(float shot);
 }

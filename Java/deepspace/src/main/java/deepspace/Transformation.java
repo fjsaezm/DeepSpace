@@ -7,9 +7,10 @@ package deepspace;
 
 /**
  *
- * @author fjaviersaezm
- * This enum represents all the possible outcomes in a combat 
+ * @author fjsae
  */
-public enum CombatResult {
-    ENEMYWINS,NOCOMBAT,STATIONESCAPES,STATIONWINS,STATIONWINSANDCONVERTS
+public enum Transformation {
+    NOTRANSFORM,
+    GETEFFICIENT,
+    SPACECITY
 }

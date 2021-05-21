@@ -13,7 +13,7 @@ import java.util.ArrayList;
  *
  * @author fjsae
  */
-public class SpaceStation {
+public class SpaceStation implements SpaceFighter {
     private static final float MAXFUEL = 100f;
     private static final float SHIELDLOSSPERUNITSHOT =0.1f;
     
@@ -28,43 +28,7 @@ public class SpaceStation {
     private Hangar hangar; // this will be o or 1
     private Damage pendingDamage; // this will be 0 or 1
     
-    public String toString(){
-        String ret = String.format("This SpaceStation has (ammoPower,fuelUnits,name,nMedals,shieldPower)=(%f,%f,%s,%d,%f)",ammoPower,fuelUnits,name,nMedals,shieldPower);
-        
-        String weap = "\n+ WEAPONS MOUNTED: \n";
-        if(weapons == null || weapons.isEmpty())
-            weap += " Ninguna\n";
-        else{
-            for(Weapon w : weapons){
-                weap += w.toString();
-            }
-        }
-        
-        String shB = "\n+ SHIELDBOOSTERS MOUNTED: \n";
-        if(shieldBoosters == null || shieldBoosters.isEmpty())
-            shB += " Ninguno\n";
-        else{
-            for(ShieldBooster sB : shieldBoosters){
-                shB += sB.toString();
-            }
-        }
-        
-        String han = "\n* HANGAR: \n";
-        if(hangar == null)
-            han += " Ninguno\n";
-        else
-            han += hangar.toString();
-        
-         
-        String pDam = "\n* PENDINGDAMAGE: \n";
-        if(pendingDamage == null)
-            pDam += " Ninguno\n";
-        else
-            pDam += pendingDamage.toString() + "\n";
-                
-        return ret + weap + shB + han + pDam;
-                
-    }
+    
     
     private void assignFuelValue(float f){
         this.fuelUnits = min(f,MAXFUEL);
@@ -74,6 +38,18 @@ public class SpaceStation {
         if(this.pendingDamage.hasNoEffect()){
             this.pendingDamage = null;
         }
+    }
+    
+    SpaceStation(SpaceStation s){
+        this.name = s.name;
+        this.ammoPower = s.ammoPower;
+        assignFuelValue(s.fuelUnits);
+        this.shieldPower = s.shieldPower;
+        this.weapons = new ArrayList<Weapon>(s.weapons);
+        this.shieldBoosters = new ArrayList<ShieldBooster>(s.shieldBoosters);
+        this.pendingDamage = s.pendingDamage;
+        this.hangar = s.hangar;
+        this.nMedals = s.nMedals;
     }
     
     SpaceStation(String n, SuppliesPackage supplies){
@@ -262,7 +238,7 @@ public class SpaceStation {
         return ret;
     }
     
-    public void setLoot(Loot loot){
+    public Transformation setLoot(Loot loot){
         CardDealer dealer = CardDealer.getInstance();
         
         if(loot.getNHangars() > 0){
@@ -290,12 +266,21 @@ public class SpaceStation {
         
         this.nMedals += loot.getNMedals();
         
+        if(loot.getEfficient()){
+            return Transformation.GETEFFICIENT;
+        }
+        else if(loot.spaceCity()){
+            return Transformation.SPACECITY;
+        }
+        
+        return Transformation.NOTRANSFORM;
+        
             
     }
     
     public void setPendingDamage(Damage d){
         Damage adjusted = d.adjust(this.weapons,this.shieldBoosters);
-        if(adjusted.getNWeapons() == 0 && adjusted.getNShields() == 0){
+        if(adjusted.hasNoEffect()){
             adjusted = null;
         }
         this.pendingDamage = adjusted;
@@ -309,6 +294,44 @@ public class SpaceStation {
             }
         }
         return ret;
+    }
+    
+    public String toString(){
+        String ret = String.format("This SpaceStation has (ammoPower,fuelUnits,name,nMedals,shieldPower)=(%f,%f,%s,%d,%f)",ammoPower,fuelUnits,name,nMedals,shieldPower);
+        
+        String weap = "\n+ WEAPONS MOUNTED: \n";
+        if(weapons == null || weapons.isEmpty())
+            weap += " Ninguna\n";
+        else{
+            for(Weapon w : weapons){
+                weap += w.toString();
+            }
+        }
+        
+        String shB = "\n+ SHIELDBOOSTERS MOUNTED: \n";
+        if(shieldBoosters == null || shieldBoosters.isEmpty())
+            shB += " Ninguno\n";
+        else{
+            for(ShieldBooster sB : shieldBoosters){
+                shB += sB.toString();
+            }
+        }
+        
+        String han = "\n* HANGAR: \n";
+        if(hangar == null)
+            han += " Ninguno\n";
+        else
+            han += hangar.toString();
+        
+         
+        String pDam = "\n* PENDINGDAMAGE: \n";
+        if(pendingDamage == null)
+            pDam += " Ninguno\n";
+        else
+            pDam += pendingDamage.toString() + "\n";
+                
+        return ret + weap + shB + han + pDam;
+                
     }
     
     

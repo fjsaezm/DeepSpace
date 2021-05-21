@@ -7,9 +7,12 @@ package deepspace;
 
 /**
  *
- * @author fjaviersaezm
- * This enum represents all the possible outcomes in a combat 
+ * @author Profe
  */
-public enum CombatResult {
-    ENEMYWINS,NOCOMBAT,STATIONESCAPES,STATIONWINS,STATIONWINSANDCONVERTS
+class SafeWeaponCardDeck extends CardDeck<Weapon> {
+    @Override
+    public Weapon next() {
+        Weapon h=(Weapon)(super.next());
+        return new Weapon(h) ;
+    }
 }

@@ -15,6 +15,8 @@ class Loot {
     private int nShields;
     private int nHangars;
     private int nMedals;
+    private boolean getEfficient;
+    private boolean spaceCity;
    
     
     Loot (int nSupplies,int nWeapons,int nShields,int nHangars,int nMedals){
@@ -23,6 +25,19 @@ class Loot {
         this.nShields = nShields;
         this.nHangars = nHangars;
         this.nMedals = nMedals;
+        this.getEfficient = false;
+        this.spaceCity = false;
+        
+    }
+    
+    Loot (int nSupplies,int nWeapons,int nShields,int nHangars,int nMedals,boolean getEfficient,  boolean city){
+        this.nSupplies = nSupplies;
+        this.nWeapons = nWeapons;
+        this.nShields = nShields;
+        this.nHangars = nHangars;
+        this.nMedals = nMedals;
+        this.getEfficient = getEfficient;
+        this.spaceCity = city;
         
     }
     
@@ -53,5 +68,13 @@ class Loot {
     
     LootToUI getUIversion(){
         return new LootToUI(this);
+    }
+    
+    public boolean getEfficient(){
+        return getEfficient;
+    }
+    
+    public boolean spaceCity(){
+        return spaceCity;
     }
 }

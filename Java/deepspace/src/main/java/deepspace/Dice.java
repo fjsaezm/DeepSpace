@@ -18,11 +18,13 @@ class Dice {
     private static final float SHIELDPROBVALUE = 0.25f;
     private static final float WEAPONPROBVALUE = 0.33f;
     private static final float FIRSTSHOTPROBVALUE = 0.5f;
+    private static final float EXTRAEFFICIENCYPROBVALUE = 0.8f;
     
     private final float NHANGARSPROB;
     private final float NSHIELDSPROB;
     private final float NWEAPONSPROB;
     private final float FIRSTSHOTPROB;
+    private final float EXTRAEFFICIENCYPROB;
     
     private Random generator;
 
@@ -31,6 +33,7 @@ class Dice {
         this.NSHIELDSPROB = SHIELDPROBVALUE;
         this.NWEAPONSPROB = WEAPONPROBVALUE;
         this.FIRSTSHOTPROB = FIRSTSHOTPROBVALUE;
+        this.EXTRAEFFICIENCYPROB = EXTRAEFFICIENCYPROBVALUE;
         this.generator = new Random();
     }
     
@@ -87,6 +90,16 @@ class Dice {
         }
         return ret;
              
+    }
+    
+    public boolean extraEfficiency(){
+        boolean ret = false;
+        float rand = this.generator.nextFloat();
+        if(rand < this.EXTRAEFFICIENCYPROB){
+            ret = true;
+        }
+        
+        return ret;
     }
     
     

@@ -9,7 +9,7 @@ package deepspace;
  *
  * @author fjsae
  */
-public class EnemyStarShip {
+public class EnemyStarShip implements SpaceFighter {
     
     private float ammoPower;
     private String name;
@@ -68,7 +68,7 @@ public class EnemyStarShip {
         return this.shieldPower;
     }
     
-    public ShotResult receiveshot(float shot){
+    public ShotResult receiveShot(float shot){
         ShotResult ret = ShotResult.RESIST;
         if(this.shieldPower < shot){
             ret  = ShotResult.DONOTRESIST;
