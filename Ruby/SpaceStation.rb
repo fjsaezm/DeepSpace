@@ -25,6 +25,18 @@ module Deepspace
             @pendingDamage = nil
         end
 
+        def copy(station)
+            @name = station.name
+            @ammoPower = station.ammoPower
+            assignFuelValue(station.fuelUnits)
+            @nMedals = station.nMedals
+            @shieldPower = station.shieldPower
+            @weapons = station.weapons
+            @shieldBoosters = station.shieldBoosters
+            @hangar = station.hangar
+            @pendingDamage = station.pendingDamage
+        end
+
         def to_s
             namE = "+ NAME: #{@name}\n"
             aP = "+ AMMOPOWER: #{@ammoPower} "
@@ -272,6 +284,15 @@ module Deepspace
             end
 
             @nMedals += loot.nMedals
+
+            ret = Transformation::NOTRANSFORM
+            if(loot.getEfficient)
+                ret = Transformation::GETEFFICIENT
+            elsif(loot.spaceCity)
+                ret = Transformation::SPACECITY
+            end
+
+            ret
         end
         
 

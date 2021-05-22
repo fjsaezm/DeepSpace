@@ -24,6 +24,7 @@ module Deepspace
             @currentStation = nil
             @currentEnemy = nil
             @spaceStations = Array.new
+            @haveSpaceCity = false
             
         end
 
@@ -129,6 +130,38 @@ module Deepspace
             ret
         end
 
+        def createSpaceCity
+            if !@haveSpaceCity
+                pos = @spaceStations.index(@currentStation)
+                col = Array.new
+                for i in 0..@spaceStations.size
+                    if i != pos
+                        col << @spaceStations[i]
+                    end
+                end
+
+                # Update reference
+                @currentStation = SpaceCity.new(@currentStation)
+                # Update reference in vector
+                @spaceStations[pos] = @currentStation
+
+            end
+        end
+
+        def makeStationEfficient
+
+            pos = @spaceStations.index(@currentStation)
+            if @dice.extraEfficiency
+                @currentStation = PowerEfficientSpaceStation.new(@currentStation)
+            else
+                @currentStation = BetaPowerEfficientSpaceStation.new(@currentStation)
+            end
+            @spaceStations[pos] = @currentStation
+
+        end
+
+
+
         def combat
             if state() == GameState::BEFORECOMBAT or state() == GameState::INIT
                 ret = combatGo(@currentStation,@currentEnemy)
@@ -179,8 +212,18 @@ module Deepspace
             else
                 #puts "Has ganado, vas a poner el loot"
                 aLoot = enemy.loot 
-                station.setLoot(aLoot)
-                combatResult = CombatResult::STATIONWINS
+                t = station.setLoot(aLoot)
+                if t == Transformation::GETEFFICIENT
+                    makeStationEfficient
+                    combatResult = CombatResult::STATIONWINSANDCONVERTS
+                elsif t == Transformation:: SpaceCity
+                    createSpaceCity
+                    combatResult = CombatResult::STATIONWINSANDCONVERTS
+                else
+                    combatResult = CombatResult::STATIONWINS
+                end
+                
+                
             end
             @gameState.next(@turns,@spaceStations.length)
             combatResult

@@ -6,33 +6,17 @@ module Deepspace
 
     class Loot
 
-        def initialize(_nSupplies,_nWeapons,_nShields,_nHangars,_nMedals)
+        def initialize(_nSupplies,_nWeapons,_nShields,_nHangars,_nMedals,ef = false,city = false)
             @nSupplies = _nSupplies
             @nWeapons = _nWeapons
             @nShields = _nShields
             @nHangars = _nHangars
             @nMedals = _nMedals
+            @getEfficient = ef
+            @spaceCity = city
         end
 
-        def nSupplies
-            @nSupplies
-        end
-
-        def nWeapons
-            @nWeapons
-        end
-
-        def nShields
-            @nShields
-        end
-
-        def nHangars
-            @nHangars
-        end
-
-        def nMedals
-            @nMedals
-        end
+        attr_reader :nSupplies, :nWeapons, :nShields, :nHangars, :nMedals, :getEfficient, :spaceCity
 
         def to_s()
             "This Loot has: #{@nSupplies} supplies, #{@nWeapons} weapons, #{@nShields} shields, #{@nHangars} hangars, #{@nMedals} medals"
